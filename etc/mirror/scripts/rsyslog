@@ -1,0 +1,12 @@
+#!/bin/sh
+# File: /etc/mirror/scripts/rsyslog
+# Reference: http://www.freeside.biz/mediawiki/index.php/Freeside:Documentation:MirroringRPMRepo
+
+source /etc/mirror/inc/rsync
+
+mkdir -p /mnt/mirror/rsyslog >/dev/null 2>&1
+cd /mnt/mirror/rsyslog
+wget --mirror -nv -nH -np http://rpms.adiscon.com/v8-stable/
+
+echo "Removing index.html files:"
+find /mnt/mirror/rsyslog -name 'index.html*' -print -exec /bin/rm {} \;

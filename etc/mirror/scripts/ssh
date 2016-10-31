@@ -1,0 +1,7 @@
+#!/bin/sh
+# File: /etc/mirror/scripts/ssh
+# 
+
+source /etc/mirror/inc/rsync
+
+rmirror mirrors.nycbug.org::OpenBSD/OpenSSH ssh

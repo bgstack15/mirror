@@ -1,0 +1,7 @@
+#!/bin/sh
+# File: /etc/mirror/scripts/fedora-epel
+#
+
+source /etc/mirror/inc/rsync
+
+rmirror mirror.cogentco.com::fedora-epel fedora/epel 4/ testing/

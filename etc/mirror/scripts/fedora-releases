@@ -1,0 +1,7 @@
+#!/bin/sh
+# File: /etc/mirror/scripts/fedora-releases
+#
+
+source /etc/mirror/inc/rsync
+
+rmirror mirrors.kernel.org::fedora/releases fedora/linux/releases 21/ test/ */Live */debug */armhfp

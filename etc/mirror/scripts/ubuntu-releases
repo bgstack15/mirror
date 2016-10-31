@@ -1,0 +1,7 @@
+#!/bin/sh
+# File: /etc/mirror/scripts/ubuntu-releases
+# 
+
+source /etc/mirror/inc/rsync
+
+rmirror rsync://mirrors.us.kernel.org/ubuntu-releases/ ubuntu/releases edubuntu/ *powerpc* *sparc* *-4.*-* *-5.*-* *-6.*-*

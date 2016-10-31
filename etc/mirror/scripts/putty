@@ -1,0 +1,13 @@
+#!/bin/sh
+# File: /etc/mirror/scripts/putty
+#
+
+source /etc/mirror/inc/rsync
+
+rmirror rsync.chiark.greenend.org.uk::ftp/users/sgtatham/putty-website-mirror putty
+
+# make symlink for latest
+rm -f /mnt/mirror/putty/latest
+latest=$( find /mnt/mirror/putty/* -maxdepth 0 -type d -regex '.*[0-9]\.[0-9][0-9].*' | sort -n | tail -n1 )
+latest=${latest##*/}
+ln -s "${latest}" /mnt/mirror/putty/latest

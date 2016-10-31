@@ -1,0 +1,13 @@
+<html>
+<title>mirror.example.com/ubuntu/example-debian repository</title>
+<body>
+<h1>mirror.example.com/bgscripts</h1>
+<hr>
+<p>You can install the example-debian repo in the /etc/apt/sources.list.d/ directory with these command:
+<pre>
+sudo wget --quiet http://mirror.example.com/ubuntu/example-debian/example-debian.gpg -O /root/example-debian.gpg
+sudo apt-key add /root/example-debian.gpg	
+sudo wget --quiet http://mirror.example.com/ubuntu/example-debian/example-debian.list -O /etc/apt/sources.list.d/example-debian.list
+</pre>
+</body>
+</html>

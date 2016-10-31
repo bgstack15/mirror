@@ -1,0 +1,7 @@
+#!/bin/sh
+# File: /etc/mirror/scripts/libreoffice
+# https://wiki.documentfoundation.org/Infra/Mirroring#Example_commands
+
+#
+
+rsync --no-motd -rlptH -hi --delete rsync://rsync.documentfoundation.org/tdf-pub/ /mnt/mirror/tdf

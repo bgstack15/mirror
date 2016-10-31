@@ -1,0 +1,3 @@
+# for user mirror to run mirror-master
+mirror	brass=(ALL)       NOPASSWD: /etc/mirror/mirror-master.sh
+

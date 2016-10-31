@@ -1,0 +1,4 @@
+# File: /etc/cron.d/mirror.cron
+# Package: mirror
+# Purpose: Run mirror right after work hours each day
+05	17	*	*	*	root	/etc/mirror/mirror-master.sh

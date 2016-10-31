@@ -1,0 +1,7 @@
+#!/bin/sh
+# File: /etc/mirror/scripts/centos
+# ftp://mirror.nandomedia.com/pub/CentOS/
+
+source /etc/mirror/inc/rsync
+
+rmirror mirrors.kernel.org::centos centos '[234]*/' 'alpha/' 's390*/' 'ia64/'

@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# rsync: Specific functions and options for rsync use
+# Original source may be from David Lowry but is uncertain.
+
+#RSYNCOPTIONS="--delete-during -l -p -r -t -v"
+RSYNCOPTIONS="-rlptv --del"
+MIRRORDIR='/mnt/mirror'
+
+function rmirror {
+    if [ -z "$2" ] ; then
+	echo "Usage: rmirror SOURCE DEST [EXCLUDES...]"
+	echo "Example: rmirror localhost:pub/project project stuff morestuff"
+	exit 1
+    fi
+    
+    SOURCE=$1; shift
+    DEST=$1; shift
+    EXCLUDES=
+
+    if [ ! -d "$MIRRORDIR/$DEST" ] ; then
+	mkdir "$MIRRORDIR/$DEST"
+    fi
+
+    for OPT in $*; do
+	EXCLUDES="$EXCLUDES --exclude=$OPT"
+    done 
+    
+    #date
+    echo rsync $RSYNCOPTIONS "$SOURCE/" "$MIRRORDIR/$DEST" $EXCLUDES 
+    rsync $RSYNCOPTIONS "$SOURCE/" "$MIRRORDIR/$DEST" $EXCLUDES || exit 1
+    #date
+}
+
+function rmirrorn {
+	RSYNCOPTIONS="-n $RSYNCOPTIONS"
+	rmirror $*
+} 
