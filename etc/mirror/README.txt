@@ -1,5 +1,5 @@
 File: etc/mirror/README.txt
-Package: mirror 1.0-3
+Package: mirror 1.0-5
 Author: bgstack15@gmail.com
 Startdate: 2016-06-08
 Title: Readme file for mirror
@@ -38,19 +38,6 @@ chmod +x /etc/mirror/scripts/{centos,fedora-epel,fedora-releases,fedora-updates,
 Included in this package are some apache configs.
 For a nice intro page, a template is provided at /etc/mirror/inc/HEADER.html
 
-### CHANGELOG
-1.0-2 2016-06-10
-uses config file /etc/mirror/mirror.conf 
-
-1.0-3 2016-07-14
-added supplementary script /etc/mirror/inc/deploy.sh
-New feature: deploy
-See its config file /etc/mirror/inc/deploy.conf
-
-2016-10-28 mirror 1.0-4
-Adding elemants for safe publishing on github
-Added repos for linuxmint
-
 ### USAGE BLOCK
 usage: mirror-master.sh [-duV] [ -f | --file /etc/mirror/mirror.conf ] [ --scriptsdir /etc/mirror/scripts ] [ scriptname ]
 version ${mirrormasterversion}
@@ -75,3 +62,19 @@ Examples:
       This command will run all files with o+x perms in scriptsdir directory.
 
 ### REFERENCE
+
+### CHANGELOG
+1.0-2 2016-06-10
+uses config file /etc/mirror/mirror.conf 
+
+1.0-3 2016-07-14
+added supplementary script /etc/mirror/inc/deploy.sh
+New feature: deploy
+See its config file /etc/mirror/inc/deploy.conf
+
+2016-10-28 mirror 1.0-4
+Adding elemants for safe publishing on github
+Added repos for linuxmint
+
+2016-11-11 mirror 1.0-5
+adding favicon, licensed CC BY 3.0 by Lorc <http://lorcblog.blogspot.com/>

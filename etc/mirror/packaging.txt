@@ -12,7 +12,7 @@ Document: Below this line
 ### PACKAGING for rhel/centos
 rpmbuilddir=~/rpmbuild/
 package=mirror
-version=1.0-4
+version=1.0-5
 shortversion=1.0
 packagespecfile="${package}-${version}/etc/${package}/docs/${package}.spec"
 sed -i -n '1,/^\%files$/p;' ${rpmbuilddir}/SOURCES/"${packagespecfile}"
@@ -30,6 +30,6 @@ rpmbuild -bb "${rpmbuilddir}"/SPECS/"${package}".spec
 ### PACKAGING in a master.tgz
 cd ~/deb 2>/dev/null || cd ~/rpmbuild/SOURCES
 package=mirror
-version=1.0-4
+version=1.0-5
 rm -rf ./"${package}-${version}".master.tgz
 tar -zcf "${package}-${version}".master.tgz "${package}-${version}"/

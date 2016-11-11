@@ -1,5 +1,5 @@
 # First line: source directory		Second line: target directory. WILL BE OVERWRITTEN!
-/home/bgstack15/rpmbuild/SOURCES/mirror-1.0-4/
+/home/bgstack15/rpmbuild/SOURCES/mirror-1.0-5/
 /home/work/mirror.clean
 # rest of the lines are "OLD WORD" "NEW WORD"
 BGSTACK15	BGSTACK15
@@ -7,6 +7,7 @@ Bgstack15	Bgstack15
 bgstack15 bgstack15
 Alice	Alice
 User1	User1
+auser1	auser1
 example	example
 EXAMPLE	EXAMPLE
 ".com"	".com"

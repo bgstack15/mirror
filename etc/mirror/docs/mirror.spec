@@ -3,7 +3,7 @@
 Summary: Mirror
 Name: mirror
 Version: 1.0
-Release: 4
+Release: 5
 License: CC BY-SA 4.0
 Group: Applications/System
 Source: mirror.tgz
@@ -68,6 +68,8 @@ rm -rf ${buildroot}
 %doc %attr(444, -, -) /etc/mirror/inc/scrub.txt
 /etc/mirror/inc/rsync
 %doc %attr(444, -, -) /etc/mirror/packaging.txt
+/etc/mirror/examples/favicon.ico
+/etc/mirror/examples/FOOTER.html
 /etc/mirror/examples/HEADER.html
 /etc/mirror/examples/example-debian/example-debian.list
 /etc/mirror/examples/example-debian/update-example-debian.sh
@@ -78,6 +80,7 @@ rm -rf ${buildroot}
 /etc/mirror/examples/example-rpm/HEADER.html
 /etc/mirror/examples/example-rpm/example-rpm.repo
 /etc/mirror/examples/example-rpm/update-example-rpm.sh
+/etc/mirror/examples/favicon.png
 %config /etc/mirror/mirror.conf
 %config /etc/httpd/sites/10.1.8.63.conf
 %config /etc/httpd/sites/mntscripts.conf

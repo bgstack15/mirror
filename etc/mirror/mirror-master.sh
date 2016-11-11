@@ -11,7 +11,7 @@
 #   2016-06-08 Modified to use mirror.conf config file, for mirror-1.0-2
 # Usage: Call in cron every day
 # Reference: ftemplate.sh 2015-11-23a; framework.sh 2015-11-23a
-#    mirror.lcroce (2014-11-11)
+#    mirror.auser1 (2014-11-11)
 # Improve:
 fiversion="2015-11-23a"
 mirrormasterversion="2016-06-08a"

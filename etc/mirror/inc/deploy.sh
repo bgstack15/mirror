@@ -4,7 +4,7 @@
 # Startdate: 2016-07-14 09:53:09
 # Title: Script that Deploys a Package
 # Purpose: To make it easy to deploy to the mirror a new version of a package
-# Package: mirror-1.0-3
+# Package: mirror
 # History: 
 # Usage: 
 # Reference: ftemplate.sh 2016-07-12a; framework.sh 2016-05-25a

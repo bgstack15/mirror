@@ -36,7 +36,7 @@ import re, shlex, os, sys, shutil
 from pathlib import Path
 
 # scrubpy version
-scrubpyversion = "2016-10-31a"
+scrubpyversion = "2016-11-11a"
 
 # Define functions
 
@@ -55,7 +55,7 @@ def removeComments(string):
 def isValidFile(_thisstring):
    # return true if not png, tgz, or other non-text file
    _isValidFile=True
-   if re.compile('.*\.(tgz|png|gif|jpg|pyc|pyo|git|swp)').match(_thisstring):
+   if re.compile('.*\.(tgz|png|gif|jpg|pyc|pyo|git|swp|ico)').match(_thisstring):
       _isValidFile=False
    #print( _thisstring + ": " + str(_isValidFile) )
    return _isValidFile
