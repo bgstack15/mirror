@@ -4,4 +4,4 @@
 
 source /etc/mirror/inc/rsync
 
-rmirror archive.ubuntu.com::ubuntu ubuntu/ubuntu *breezy* *warty* *hoary* *dapper* *edgy* *feisty* gutsy* intrepid* jaunty* karmic* maverick* natty* oneiric* quantal* raring* saucy*  *[_-]powerpc* *[_-]sparc* *[_-]ia64* pool/**/*.tar.* *.diff.gz* *.dsc source/
+rmirror archive.ubuntu.com::ubuntu ubuntu/ubuntu *breezy* *warty* *hoary* *dapper* *edgy* *feisty* gutsy* intrepid* jaunty* karmic* lucid* maverick* natty* oneiric* quantal* raring* saucy* vivid* wily*  *[_-]powerpc* *[_-]sparc* *[_-]ia64* pool/**/*.tar.* *.diff.gz* *.dsc source/

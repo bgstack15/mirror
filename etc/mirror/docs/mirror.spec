@@ -3,7 +3,7 @@
 Summary: Mirror
 Name: mirror
 Version: 1.0
-Release: 5
+Release: 6
 License: CC BY-SA 4.0
 Group: Applications/System
 Source: mirror.tgz
@@ -12,7 +12,7 @@ URL: bgstack15@gmail.com
 #Vendor:
 Packager: Bgstack15 <bgstack15@gmail.com>
 Buildarch: noarch
-PreReq: bgscripts >= 1.1-17
+PreReq: bgscripts >= 1.1-28
 Requires: httpd >= 2.2
 
 %description
@@ -39,7 +39,6 @@ rm -rf ${buildroot}
 %config /etc/sudoers.d/50_mirror-sudo
 %config /etc/cron.d/mirror.cron
 /etc/mirror/mirror-master.sh
-%doc %attr(444, -, -) /etc/mirror/README.txt
 /etc/mirror/scripts/ssh
 /etc/mirror/scripts/libreoffice
 /etc/mirror/scripts/linuxmint-repos
@@ -48,6 +47,7 @@ rm -rf ${buildroot}
 /etc/mirror/scripts/rsyslog
 /etc/mirror/scripts/centos
 /etc/mirror/scripts/fedora-epel
+/etc/mirror/scripts/old-scripts.tgz
 /etc/mirror/scripts/ubuntu-releases
 /etc/mirror/scripts/linuxmint-isos
 /etc/mirror/scripts/fedora-releases
@@ -58,16 +58,16 @@ rm -rf ${buildroot}
 /etc/mirror/docs/debian/postrm
 /etc/mirror/docs/debian/control
 /etc/mirror/docs/debian/preinst
+%doc %attr(444, -, -) /etc/mirror/docs/README.txt
 /etc/mirror/docs/mirror.spec
-/etc/mirror/inc/scrub.py
-/etc/mirror/inc/scrub.pyc
-/etc/mirror/inc/scrub.pyo
+%doc %attr(444, -, -) /etc/mirror/docs/packaging.txt
+%doc %attr(444, -, -) /etc/mirror/docs/files-for-versioning.txt
 %config /etc/mirror/inc/deploy.conf
+/etc/mirror/inc/pack
 /etc/mirror/inc/localize_git.sh
 /etc/mirror/inc/deploy.sh
 %doc %attr(444, -, -) /etc/mirror/inc/scrub.txt
 /etc/mirror/inc/rsync
-%doc %attr(444, -, -) /etc/mirror/packaging.txt
 /etc/mirror/examples/favicon.ico
 /etc/mirror/examples/FOOTER.html
 /etc/mirror/examples/HEADER.html

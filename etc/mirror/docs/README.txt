@@ -1,5 +1,5 @@
 File: etc/mirror/README.txt
-Package: mirror 1.0-5
+Package: mirror 1.0-6
 Author: bgstack15@gmail.com
 Startdate: 2016-06-08
 Title: Readme file for mirror
@@ -37,6 +37,10 @@ chmod +x /etc/mirror/scripts/{centos,fedora-epel,fedora-releases,fedora-updates,
 ## Configuring the web server
 Included in this package are some apache configs.
 For a nice intro page, a template is provided at /etc/mirror/inc/HEADER.html
+
+## Maintaining your mirror server
+Fedora only keeps current the two latest versions.
+Ubuntu keeps certain versions current: check http://releases.ubuntu.com/ for which versions.
 
 ### USAGE BLOCK
 usage: mirror-master.sh [-duV] [ -f | --file /etc/mirror/mirror.conf ] [ --scriptsdir /etc/mirror/scripts ] [ scriptname ]
@@ -78,3 +82,6 @@ Added repos for linuxmint
 
 2016-11-11 mirror 1.0-5
 adding favicon, licensed CC BY 3.0 by Lorc <http://lorcblog.blogspot.com/>
+
+2017-01-11 mirror-1.0-6
+Updated all scripts for the bgscripts-1.1-28 directory migration to /usr/share/bgscripts

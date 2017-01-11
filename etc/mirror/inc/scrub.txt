@@ -1,15 +1,21 @@
-# First line: source directory		Second line: target directory. WILL BE OVERWRITTEN!
-/home/bgstack15/rpmbuild/SOURCES/mirror-1.0-5/
-/home/work/mirror.clean
+# for scrubpy version 2016-11-16a or newer
+source /home/bgstack15/rpmbuild/SOURCES/mirror-1.0-6/
+target /home/work/mirror.clean
+ignore "tgz png gif jpg pyc pyo git swp ico"
 # rest of the lines are "OLD WORD" "NEW WORD"
 BGSTACK15	BGSTACK15
 Bgstack15	Bgstack15
 bgstack15 bgstack15
+Bname	Bname
+bname	bname
+Stack15	Stack15
+stack15	stack15
 Alice	Alice
 User1	User1
 auser1	auser1
 example	example
 EXAMPLE	EXAMPLE
 ".com"	".com"
+".COM"	".COM"
 "203.0."		"203.0."
 one	one

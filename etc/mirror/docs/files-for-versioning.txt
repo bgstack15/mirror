@@ -1,0 +1,3 @@
+docs/README.txt
+docs/mirror.spec
+inc/scrub.txt

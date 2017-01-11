@@ -4,4 +4,4 @@
 
 source /etc/mirror/inc/rsync
 
-rmirror mirror.lstn.net::fedora-enchilada/updates fedora/linux/updates '[89]/' '1[0-9]/' 20/ testing/ */ppc */ppc64 */armhfp
+rmirror mirror.lstn.net::fedora-enchilada/updates fedora/linux/updates '[89]/' '1[0-9]/' '2[0-3]/' testing/ */ppc */ppc64 */armhfp
