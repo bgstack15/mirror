@@ -98,20 +98,8 @@ function parseFlag {
 # DETERMINE LOCATION OF FRAMEWORK
 while read flocation; do if [[ -x $flocation ]] && [[ $( $flocation --fcheck ) -ge 20160229 ]]; then frameworkscript=$flocation; break; fi; done <<EOFLOCATIONS
 ./framework.sh
-${scriptdir}/framework.sh
-~/bin/bgscripts/framework.sh
-~/bin/framework.sh
-~/bgscripts/framework.sh
-~/framework.sh
-/usr/local/bin/bgscripts/framework.sh
-/usr/local/bin/framework.sh
-/usr/bin/bgscripts/framework.sh
-/usr/bin/framework.sh
 /usr/bgscripts/framework.sh
-/usr/framework.sh
-/bin/bgscripts/framework.sh
-/bin/framework.sh
-/mnt/scripts/bgscripts/framework.sh
+/usr/share/bgscripts/framework.sh
 EOFLOCATIONS
 [[ -z "$frameworkscript" ]] && echo "$0: framework not found. Aborted." 1>&2 && exit 4
 

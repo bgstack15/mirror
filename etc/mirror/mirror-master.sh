@@ -9,12 +9,13 @@
 # History: 
 #   2016-01-07 Fixed logic for detecting already-running instance
 #   2016-06-08 Modified to use mirror.conf config file, for mirror-1.0-2
+#   2017-01-11 Updated new location for framework
 # Usage: Call in cron every day
 # Reference: ftemplate.sh 2015-11-23a; framework.sh 2015-11-23a
 #    mirror.auser1 (2014-11-11)
 # Improve:
 fiversion="2015-11-23a"
-mirrormasterversion="2016-06-08a"
+mirrormasterversion="2017-01-11a"
 
 usage() {
    less -F >&2 <<ENDUSAGE
@@ -83,6 +84,7 @@ function parseFlag {
 while read flocation; do if [[ -x $flocation ]] && [[ $( $flocation --fcheck ) -ge 20160525 ]]; then frameworkscript=$flocation; break; fi; done <<EOFLOCATIONS
 ./framework.sh
 /usr/bgscripts/framework.sh
+/usr/share/bgscripts/framework.sh
 EOFLOCATIONS
 [[ -z "$frameworkscript" ]] && echo "$0: framework not found. Aborted." 1>&2 && exit 4
 
