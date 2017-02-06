@@ -51,7 +51,7 @@ case "${type}" in
 ########## PACKAGING for rhel/centos
 # if you copy-paste this, be sure to define package, version, shortversion
 rpmbuilddir=~/rpmbuild/
-packagespecfile="${package}-${version}/etc/${package}/docs/${package}.spec"
+packagespecfile="${package}-${version}/usr/share/${package}/docs/${package}.spec"
 sed -i -n '1,/^\%files$/p;' "${rpmbuilddir}/SOURCES/${packagespecfile}"
 cd "${rpmbuilddir}/SOURCES/${package}-${version}"
 find * ! -type d ! -regex '.*?.swp' ! -regex '.*?DEBIAN.*?' | sed -e 's/^/\//;' -e 's/\(.*\.txt\)/%doc %attr(444, -, -) \1/;' -e 's/\(.*\.\(conf\|cron\)\|.*sudoers\.d\)/%config \1/;' -e 's/\(.*bin.*\)/%verify(link) \1/;' -e 's/\(.*\)\.py$/\1\.py\n\1\.pyc\n\1\.pyo/;' >> "${rpmbuilddir}/SOURCES/${packagespecfile}"

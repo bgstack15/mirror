@@ -36,53 +36,55 @@ rm -rf ${buildroot}
 %files
 %config /etc/sudoers.d/50_mirror-sudo
 %config /etc/cron.d/mirror.cron
-/etc/mirror/mirror-master.sh
-/etc/mirror/scripts/ssh
-/etc/mirror/scripts/libreoffice
-/etc/mirror/scripts/linuxmint-repos
-/etc/mirror/scripts/ubuntu
-/etc/mirror/scripts/putty
-/etc/mirror/scripts/rsyslog
-/etc/mirror/scripts/centos
-/etc/mirror/scripts/fedora-epel
-/etc/mirror/scripts/old-scripts.tgz
-/etc/mirror/scripts/ubuntu-releases
-/etc/mirror/scripts/linuxmint-isos
-/etc/mirror/scripts/fedora-releases
-/etc/mirror/scripts/fedora-updates
-/etc/mirror/docs/debian/postinst
-/etc/mirror/docs/debian/conffiles
-/etc/mirror/docs/debian/prerm
-/etc/mirror/docs/debian/postrm
-/etc/mirror/docs/debian/control
-/etc/mirror/docs/debian/preinst
-%doc %attr(444, -, -) /etc/mirror/docs/README.txt
-/etc/mirror/docs/mirror.spec
-%doc %attr(444, -, -) /etc/mirror/docs/packaging.txt
-%doc %attr(444, -, -) /etc/mirror/docs/files-for-versioning.txt
-%config /etc/mirror/inc/deploy.conf
-/etc/mirror/inc/pack
-/etc/mirror/inc/localize_git.sh
-/etc/mirror/inc/deploy.sh
-%doc %attr(444, -, -) /etc/mirror/inc/scrub.txt
-/etc/mirror/inc/rsync
-/etc/mirror/examples/favicon.ico
-/etc/mirror/examples/FOOTER.html
-/etc/mirror/examples/HEADER.html
-/etc/mirror/examples/example-debian/example-debian.list
-/etc/mirror/examples/example-debian/update-example-debian.sh
-/etc/mirror/examples/example-debian/FOOTER.html
-/etc/mirror/examples/example-debian/HEADER.html
-/etc/mirror/examples/example-debian/example-debian.gpg
-/etc/mirror/examples/example-rpm/FOOTER.html
-/etc/mirror/examples/example-rpm/HEADER.html
-/etc/mirror/examples/example-rpm/example-rpm.repo
-/etc/mirror/examples/example-rpm/update-example-rpm.sh
-/etc/mirror/examples/favicon.png
+%config /etc/mirror/deploy.conf
 %config /etc/mirror/mirror.conf
+%config /etc/httpd/sites/zz_proxy.conf
 %config /etc/httpd/sites/10.1.8.63.conf
 %config /etc/httpd/sites/mntscripts.conf
 %config /etc/httpd/sites/mirror.conf
+%config /etc/httpd/conf.d/local_mirror.conf
 %verify(link) /usr/local/bin/deploy
+/usr/share/mirror/mirror-master.sh
+/usr/share/mirror/scripts/ssh
+/usr/share/mirror/scripts/libreoffice
+/usr/share/mirror/scripts/linuxmint-repos
+/usr/share/mirror/scripts/ubuntu
+/usr/share/mirror/scripts/putty
+/usr/share/mirror/scripts/rsyslog
+/usr/share/mirror/scripts/centos
+/usr/share/mirror/scripts/fedora-epel
+/usr/share/mirror/scripts/old-scripts.tgz
+/usr/share/mirror/scripts/ubuntu-releases
+/usr/share/mirror/scripts/linuxmint-isos
+/usr/share/mirror/scripts/fedora-releases
+/usr/share/mirror/scripts/fedora-updates
+/usr/share/mirror/docs/debian/postinst
+/usr/share/mirror/docs/debian/conffiles
+/usr/share/mirror/docs/debian/prerm
+/usr/share/mirror/docs/debian/postrm
+/usr/share/mirror/docs/debian/control
+/usr/share/mirror/docs/debian/preinst
+%doc %attr(444, -, -) /usr/share/mirror/docs/README.txt
+/usr/share/mirror/docs/mirror.spec
+%doc %attr(444, -, -) /usr/share/mirror/docs/packaging.txt
+%doc %attr(444, -, -) /usr/share/mirror/docs/files-for-versioning.txt
+/usr/share/mirror/deploy.sh
+/usr/share/mirror/inc/pack
+/usr/share/mirror/inc/localize_git.sh
+%doc %attr(444, -, -) /usr/share/mirror/inc/scrub.txt
+/usr/share/mirror/inc/rsync
+/usr/share/mirror/examples/favicon.ico
+/usr/share/mirror/examples/FOOTER.html
+/usr/share/mirror/examples/HEADER.html
+/usr/share/mirror/examples/example-debian/example-debian.list
+/usr/share/mirror/examples/example-debian/update-example-debian.sh
+/usr/share/mirror/examples/example-debian/FOOTER.html
+/usr/share/mirror/examples/example-debian/HEADER.html
+/usr/share/mirror/examples/example-debian/example-debian.gpg
+/usr/share/mirror/examples/example-rpm/FOOTER.html
+/usr/share/mirror/examples/example-rpm/HEADER.html
+/usr/share/mirror/examples/example-rpm/example-rpm.repo
+/usr/share/mirror/examples/example-rpm/update-example-rpm.sh
+/usr/share/mirror/examples/favicon.png
 /usr/share/httpd/icons/repo.png
 /usr/share/httpd/icons/rpm.png
