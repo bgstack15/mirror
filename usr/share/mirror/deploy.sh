@@ -6,6 +6,7 @@
 # Purpose: To make it easy to deploy to the mirror a new version of a package
 # Package: mirror
 # History: 
+#    2017-02-06 added --noupdate option
 # Usage: 
 # Reference: ftemplate.sh 2016-07-12a; framework.sh 2016-05-25a
 #    mirror-master from mirror-1.0-2.noarch.rpm
@@ -17,7 +18,7 @@ deployversion="2016-07-14a"
 
 usage() {
    less -F >&2 <<ENDUSAGE
-usage: deploy.sh [-duV] [-c conffile] packagename packageversion
+usage: deploy.sh [-duV] [-c conffile] [-n] packagename packageversion
 version ${deployversion}
  -d debug   Show debugging info, including parsed variables.
  -u usage   Show this usage block.
@@ -26,6 +27,7 @@ version ${deployversion}
 Given a packagename and packageversion, this script will deploy the correct architecture type of package file to the specified locations.
 If debug level is 3 or less, the copy will actually be performed.
 See the conffile ${conffile} for examples.
+ -n noupdate Do not execute the update script. Useful for serial deployments.
 Return values:
 0 Normal
 1 Help or version info displayed
@@ -90,6 +92,7 @@ function parseFlag {
       "V" | "fcheck" | "version" ) ferror "${scriptfile} version ${deployversion}"; exit 1;;
       #"i" | "infile" | "inputfile" ) getval;infile1=$tempval;;
       "c" | "conffile" ) getval;conffile=$tempval;;
+      "n" | "noupdate" ) noupdate=1;;
    esac
    
    debuglev 10 && { [[ hasval -eq 1 ]] && ferror "flag: $flag = $tempval" || ferror "flag: $flag"; }
@@ -118,6 +121,7 @@ esac
 conffile=/etc/mirror/deploy.conf
 logfile=${scriptdir}/${scripttrim}.${today}.out
 interestedparties="bgstack15@example.com"
+noupdate=0 # can be adjusted with a flag
 
 # REACT TO ROOT STATUS
 case $is_root in
@@ -278,16 +282,22 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
          eval thisupdatescript=\${${thiszone}updatescript}
          if [[ thiszoneused -ne 0 ]];
          then
-            [[ -n "${thisupdatescript}" ]] && {
-               if [[ ! -x "${thisupdatescript}" ]];
-               then
-                  ferror "Cannot execute the updatescript ${thisupdatescript}. Skipped."
-               else
-                  # is executable 
-                  debuglev 2 && ferror "Execute ${thisupdatescript}"
-                  ! debuglev 4 && ${thisupdatescript}
-               fi
-            }
+            if test "${noupdate}" = "1";
+            then
+               # told to not execute any update scripts at all.
+               ferror "Skipping any execute scripts."
+            else
+               [[ -n "${thisupdatescript}" ]] && {
+                  if [[ ! -x "${thisupdatescript}" ]];
+                  then
+                     ferror "Cannot execute the updatescript ${thisupdatescript}. Skipped."
+                  else
+                     # is executable 
+                     debuglev 2 && ferror "Execute ${thisupdatescript}"
+                     ! debuglev 4 && ${thisupdatescript}
+                  fi
+               }
+            fi
          fi
         
       } # end if-not-input-zone

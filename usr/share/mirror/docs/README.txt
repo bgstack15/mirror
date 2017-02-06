@@ -15,9 +15,9 @@ mirror is basically a collection of scripts that provide the sync instructions t
 
 ## Steps to take before using mirror for the first time
 Configure these files:
-/etc/httpd/sites/mirror.conf
-/etc/mirror/inc/rsync
 /etc/mirror/mirror.conf
+/etc/httpd/sites/mirror.conf
+/usr/share/mirror/inc/rsync
 
 Select a storage directory. On the EXAMPLE mirror, we used an nfs mount for multiple locations.
 --- BEGIN excerpt from mirror.example.com:/etc/fstab
@@ -36,14 +36,14 @@ chmod +x /etc/mirror/scripts/{centos,fedora-epel,fedora-releases,fedora-updates,
 
 ## Configuring the web server
 Included in this package are some apache configs.
-For a nice intro page, a template is provided at /etc/mirror/inc/HEADER.html
+For a nice intro page, a template is provided at /usr/share/mirror/inc/HEADER.html
 
 ## Maintaining your mirror server
 Fedora only keeps current the two latest versions.
 Ubuntu keeps certain versions current: check http://releases.ubuntu.com/ for which versions.
 
 ### USAGE BLOCK
-usage: mirror-master.sh [-duV] [ -f | --file /etc/mirror/mirror.conf ] [ --scriptsdir /etc/mirror/scripts ] [ scriptname ]
+usage: mirror-master.sh [-duV] [ -f | --file /etc/mirror/mirror.conf ] [ --scriptsdir /usr/share/mirror/scripts ] [ scriptname ]
 version ${mirrormasterversion}
  -d debug   Show debugging info, including parsed variables.
  -u usage   Show this usage block.
@@ -89,3 +89,4 @@ Updated all scripts for the bgscripts-1.1-28 directory migration to /usr/share/b
 2017-02-06 mirror-1.0-7
 Rearranged directory structure to comply with FHS 3.0
 Included a zz_proxy.conf example
+Added deploy.sh --noupdate option
