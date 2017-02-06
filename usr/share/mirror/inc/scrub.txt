@@ -1,21 +1,29 @@
 # for scrubpy version 2016-11-16a or newer
-source /home/bgstack15/rpmbuild/SOURCES/mirror-1.0-6/
+source /home/bgstack15/rpmbuild/SOURCES/mirror-1.0-7
 target /home/work/mirror.clean
 ignore "tgz png gif jpg pyc pyo git swp ico"
 # rest of the lines are "OLD WORD" "NEW WORD"
 BGSTACK15	BGSTACK15
 Bgstack15	Bgstack15
 bgstack15 bgstack15
+BNAME	BNAME
 Bname	Bname
 bname	bname
+STACK15	STACK15
 Stack15	Stack15
 stack15	stack15
 Alice	Alice
+alice	alice
 User1	User1
-auser1	auser1
-example	example
+user1	user1
+Luser1	Auser1
+luser1	auser1
 EXAMPLE	EXAMPLE
-".com"	".com"
+example	example
 ".COM"	".COM"
+".com"	".com"
 "203.0."		"203.0."
+SMITH123	SMITH123
+Smith123	Smith123
+smith123	smith123
 one	one

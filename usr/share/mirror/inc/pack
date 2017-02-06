@@ -1,5 +1,12 @@
 #!/bin/bash
-. /usr/share/bgscripts/framework.sh
+
+# DETERMINE LOCATION OF FRAMEWORK
+while read flocation; do if test -x ${flocation} && test "$( ${flocation} --fcheck )" -ge 20170111; then frameworkscript="${flocation}"; break; fi; done <<EOFLOCATIONS
+/usr/share/bgscripts/framework.sh
+EOFLOCATIONS
+test -z "${frameworkscript}" && echo "$0: framework not found. Aborted." 1>&2 && exit 4
+
+. ${frameworkscript} || echo "$0: framework did not run properly. Continuing..." 1>&2
 
 type="";
 
@@ -12,7 +19,7 @@ esac
 echo " $@ " | grep -qiE -- "help|usage|\s-h\s|\s-\?" 1>/dev/null 2>&1 && {
    # display help and exit
    less -F <<EOF
-pack utility version 2017-01-11b-mirror
+pack utility version 2017-02-06a-mirror
 usage: pack [ rpm | deb | tar | scrub ] [ --debug | -d {0-10} ]
 Provides a single command for building a package. This script is customized to each package.
 optional arguments:

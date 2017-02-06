@@ -1,5 +1,5 @@
 File: etc/mirror/README.txt
-Package: mirror 1.0-6
+Package: mirror 1.0-7
 Author: bgstack15@gmail.com
 Startdate: 2016-06-08
 Title: Readme file for mirror
@@ -85,3 +85,7 @@ adding favicon, licensed CC BY 3.0 by Lorc <http://lorcblog.blogspot.com/>
 
 2017-01-11 mirror-1.0-6
 Updated all scripts for the bgscripts-1.1-28 directory migration to /usr/share/bgscripts
+
+2017-02-06 mirror-1.0-7
+Rearranged directory structure to comply with FHS 3.0
+Included a zz_proxy.conf example

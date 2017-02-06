@@ -1,5 +1,5 @@
 #!/bin/sh
-# File: /etc/mirror/inc/deploy.sh
+# File: /usr/share/mirror/deploy.sh
 # Author: bgstack15@gmail.com
 # Startdate: 2016-07-14 09:53:09
 # Title: Script that Deploys a Package
@@ -115,7 +115,7 @@ esac
 # today server thistty scriptdir scriptfile scripttrim
 # is_cronjob stdin_piped stdout_piped stderr_piped sendsh sendopts
 . ${frameworkscript} || echo "$0: framework did not run properly. Continuing..." 1>&2
-conffile=/etc/mirror/inc/deploy.conf
+conffile=/etc/mirror/deploy.conf
 logfile=${scriptdir}/${scripttrim}.${today}.out
 interestedparties="bgstack15@example.com"
 

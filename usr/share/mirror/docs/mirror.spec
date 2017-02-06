@@ -1,9 +1,7 @@
-#
-# spec file for Mirror compiled by hand
 Summary: Mirror
 Name: mirror
 Version: 1.0
-Release: 6
+Release: 7
 License: CC BY-SA 4.0
 Group: Applications/System
 Source: mirror.tgz
