@@ -1,7 +1,7 @@
 Summary: Mirror
 Name: mirror
 Version: 1.0
-Release: 7
+Release: 8
 License: CC BY-SA 4.0
 Group: Applications/System
 Source: mirror.tgz
@@ -38,26 +38,22 @@ rm -rf ${buildroot}
 %config /etc/cron.d/mirror.cron
 %config /etc/mirror/deploy.conf
 %config /etc/mirror/mirror.conf
-%config /etc/httpd/sites/zz_proxy.conf
-%config /etc/httpd/sites/10.1.8.63.conf
-%config /etc/httpd/sites/mntscripts.conf
-%config /etc/httpd/sites/mirror.conf
 %config /etc/httpd/conf.d/local_mirror.conf
 %verify(link) /usr/local/bin/deploy
 /usr/share/mirror/mirror-master.sh
-/usr/share/mirror/scripts/ssh
-/usr/share/mirror/scripts/libreoffice
-/usr/share/mirror/scripts/linuxmint-repos
-/usr/share/mirror/scripts/ubuntu
-/usr/share/mirror/scripts/putty
-/usr/share/mirror/scripts/rsyslog
-/usr/share/mirror/scripts/centos
-/usr/share/mirror/scripts/fedora-epel
-/usr/share/mirror/scripts/old-scripts.tgz
-/usr/share/mirror/scripts/ubuntu-releases
-/usr/share/mirror/scripts/linuxmint-isos
-/usr/share/mirror/scripts/fedora-releases
-/usr/share/mirror/scripts/fedora-updates
+%config /usr/share/mirror/scripts/ssh
+%config /usr/share/mirror/scripts/libreoffice
+%config /usr/share/mirror/scripts/linuxmint-repos
+%config /usr/share/mirror/scripts/ubuntu
+%config /usr/share/mirror/scripts/putty
+%config /usr/share/mirror/scripts/rsyslog
+%config /usr/share/mirror/scripts/centos
+%config /usr/share/mirror/scripts/fedora-epel
+%config /usr/share/mirror/scripts/old-scripts.tgz
+%config /usr/share/mirror/scripts/ubuntu-releases
+%config /usr/share/mirror/scripts/linuxmint-isos
+%config /usr/share/mirror/scripts/fedora-releases
+%config /usr/share/mirror/scripts/fedora-updates
 /usr/share/mirror/docs/debian/postinst
 /usr/share/mirror/docs/debian/conffiles
 /usr/share/mirror/docs/debian/prerm
@@ -76,6 +72,10 @@ rm -rf ${buildroot}
 /usr/share/mirror/examples/favicon.ico
 /usr/share/mirror/examples/FOOTER.html
 /usr/share/mirror/examples/HEADER.html
+%config /usr/share/mirror/examples/sites/zz_proxy.conf
+%config /usr/share/mirror/examples/sites/10.1.8.63.conf
+%config /usr/share/mirror/examples/sites/mntscripts.conf
+%config /usr/share/mirror/examples/sites/mirror.conf
 /usr/share/mirror/examples/example-debian/example-debian.list
 /usr/share/mirror/examples/example-debian/update-example-debian.sh
 /usr/share/mirror/examples/example-debian/FOOTER.html

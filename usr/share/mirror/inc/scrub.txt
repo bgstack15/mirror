@@ -1,5 +1,5 @@
 # for scrubpy version 2016-11-16a or newer
-source /home/bgstack15/rpmbuild/SOURCES/mirror-1.0-7
+source /home/bgstack15/rpmbuild/SOURCES/mirror-1.0-8
 target /home/work/mirror.clean
 ignore "tgz png gif jpg pyc pyo git swp ico"
 # rest of the lines are "OLD WORD" "NEW WORD"

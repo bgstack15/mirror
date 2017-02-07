@@ -1,5 +1,5 @@
 File: etc/mirror/README.txt
-Package: mirror 1.0-7
+Package: mirror 1.0-8
 Author: bgstack15@gmail.com
 Startdate: 2016-06-08
 Title: Readme file for mirror
@@ -90,3 +90,8 @@ Updated all scripts for the bgscripts-1.1-28 directory migration to /usr/share/b
 Rearranged directory structure to comply with FHS 3.0
 Included a zz_proxy.conf example
 Added deploy.sh --noupdate option
+
+2017-02-07 mirror-1.0-8
+Fixed mirror.conf to point to correct directory of /usr/share/mirror/scripts
+Added contents of /usr/share/mirror/scripts as %config directives in ./pack spec instructions
+Moved httpd/sites contents to /usr/share/mirror/examples/sites so it will not overwrite any existing files. These are just examples and should be deployed manually.
