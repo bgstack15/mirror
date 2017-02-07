@@ -10,7 +10,7 @@ URL: bgstack15@gmail.com
 #Vendor:
 Packager: Bgstack15 <bgstack15@gmail.com>
 Buildarch: noarch
-PreReq: bgscripts >= 1.1-28
+PreReq: bgscripts-core >= 1.1-28
 Requires: httpd >= 2.2
 
 %description
