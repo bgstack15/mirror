@@ -2,7 +2,7 @@
 # File: /etc/mirror/scripts/rsyslog
 # Reference: http://www.freeside.biz/mediawiki/index.php/Freeside:Documentation:MirroringRPMRepo
 
-source /etc/mirror/inc/rsync
+source /usr/share/mirror/inc/rsync
 
 mkdir -p /mnt/mirror/rsyslog >/dev/null 2>&1
 cd /mnt/mirror/rsyslog

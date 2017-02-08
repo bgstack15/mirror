@@ -2,7 +2,7 @@
 # File: /etc/mirror/scripts/putty
 #
 
-source /etc/mirror/inc/rsync
+source /usr/share/mirror/inc/rsync
 
 rmirror rsync.chiark.greenend.org.uk::ftp/users/sgtatham/putty-website-mirror putty
 

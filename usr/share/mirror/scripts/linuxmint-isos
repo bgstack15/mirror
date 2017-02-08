@@ -2,6 +2,6 @@
 # File: /etc/mirror/scripts/linuxmint
 #
 
-source /etc/mirror/inc/rsync
+source /usr/share/mirror/inc/rsync
 
 rmirror rsync://ftp.heanet.ie/pub/linuxmint.com linuxmint/isos

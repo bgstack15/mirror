@@ -2,6 +2,6 @@
 # File: /etc/mirror/scripts/linuxmint
 #
 
-source /etc/mirror/inc/rsync
+source /usr/share/mirror/inc/rsync
 
 rmirror rsync://rsync-packages.linuxmint.com/packages linuxmint/packages

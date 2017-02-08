@@ -1,5 +1,5 @@
 File: etc/mirror/README.txt
-Package: mirror 1.0-8
+Package: mirror 1.0-9
 Author: bgstack15@gmail.com
 Startdate: 2016-06-08
 Title: Readme file for mirror
@@ -95,3 +95,7 @@ Added deploy.sh --noupdate option
 Fixed mirror.conf to point to correct directory of /usr/share/mirror/scripts
 Added contents of /usr/share/mirror/scripts as %config directives in ./pack spec instructions
 Moved httpd/sites contents to /usr/share/mirror/examples/sites so it will not overwrite any existing files. These are just examples and should be deployed manually.
+Fixed dependency to bgscripts-core
+
+2017-02-08 mirror-1.0-9
+Updated scripts to use /usr/share/mirror/inc/rsync script
