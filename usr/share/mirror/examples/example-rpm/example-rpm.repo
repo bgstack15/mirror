@@ -1,8 +1,0 @@
-# example-rpm.repo
-# Install with:
-# wget http://mirror.example.com/bgscripts/example-rpm.repo -O /etc/yum.repos.d/example-rpm.repo
-[example-rpm]
-name=example-rpm
-baseurl=http://mirror.example.com/bgscripts/
-gpgcheck=0
-#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7

@@ -13,7 +13,7 @@
 #   2017-02-06 rearranged mirror package to FHS 3.0
 # Usage: Call in cron every day
 # Reference: ftemplate.sh 2015-11-23a; framework.sh 2015-11-23a
-#    mirror.luser1 (2014-11-11)
+#    mirror.lcroce (2014-11-11)
 # Improve:
 fiversion="2015-11-23a"
 mirrormasterversion="2017-02-06a"

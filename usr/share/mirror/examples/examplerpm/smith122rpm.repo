@@ -1,0 +1,7 @@
+# smith122rpm.repo
+# Install with:
+# wget http://albion320.no-ip.biz/smith122/repo/rpm/smith122rpm.repo -O /etc/yum.repos.d/smith122rpm.repo
+[smith122rpm]
+name=smith122rpm
+baseurl=http://albion320.no-ip.biz/smith122/repo/rpm/
+gpgcheck=0

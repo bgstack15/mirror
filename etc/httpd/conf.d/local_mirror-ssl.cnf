@@ -1,0 +1,48 @@
+# File: darmok:/etc/httpd/conf.d/local_mirror-ssl.cnf
+# Author: bgstack15
+# Startdate: 2016-03-16
+# Title: Common SSL Config for Apache
+# Purpose: To unify the directives for all the ssl vhosts on this host
+# History: 2016-09-07 adapted for reverseproxyforplex
+# Usage: in an ssl vhost, use command
+#    Include sites/local_mirror-ssl.cnf
+# Reference: jasper
+#   "Linux\Centos 7 Template\Adding the service httpd.docx"
+# Improve:
+# Document: Below this line
+SSLEngine on
+SSLProtocol all -SSLv2 -SSLv3
+SSLHonorCipherOrder on
+SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA !RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS"
+
+<Files ~ "\.(cgi|shtml|phtml|php3?)$">
+        SSLOptions +StdEnvVars
+</Files>
+<Directory "/var/www/cgi-bin">
+        SSLOptions +StdEnvVars
+</Directory>
+
+SSLCertificateFile /etc/pki/tls/certs/darmok.crt
+SSLCertificateKeyFile /etc/pki/tls/private/darmok.key
+
+SetEnvIf User-Agent ".*MSIE 4\.0b2.*"                 nokeepalive ssl-unclean-shutdown                 downgrade-1.0 force-response-1.0
+
+LogLevel warn
+ErrorLog logs/ssl_error_log
+LogFormat "%V %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combinedvhost
+CustomLog logs/ssl_access_log combinedvhost
+
+<Directory "/var/www/html/notfound/">
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+</Directory>
+
+# Reverse proxy all ssl traffic to the nonencrypted site. This is a template for any and all sites.
+# Observe that this depends on /etc/hosts or DNS to look up the variable SERVER_NAME
+SSLProxyEngine On
+
+#RewriteEngine On
+#RewriteRule ^/(.*)$     http://%{SERVER_NAME}/%{REQUEST_URI} [P,L]
+
+# END OF FILE all-ssl.cnf

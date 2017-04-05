@@ -1,0 +1,36 @@
+#!/bin/sh
+# File: get-files
+case "${1}" in
+   rpm)
+
+### for rpm
+find * -type d \
+   \( \
+      -regex 'usr\/share\/mirror.*' \
+      -o -regex 'etc\/mirror.*' \
+   \) \
+   | sed -e 's/^/%dir \//;'
+find * -mindepth 1 ! -name "${package}.spec.$$.swp" \
+   ! -type d \
+   ! -regex '.*.swp' \
+   ! -regex '.*?DEBIAN.*?' \
+   | sed -e '
+s/^/\//;
+s/\(.*\.txt\)/%doc %attr(444, -, -) \1/;
+s/\(.*\.\(conf\|cron\)\|.*sudoers\.d\|\/usr\/share\/mirror\/scripts\/.\+\)/%config \1/;
+s/\(.*bin.*\)/%verify(link) \1/;
+s/\(.*\)\.py$/\1\.py\n\1\.pyc\n\1\.pyo/;
+'
+      ;;
+   deb)
+
+### for deb
+# will be redirected to md5sum
+echo "Error: Unh. Feature not yet implemented. Aborted." && exit 1
+
+      ;;
+   *)
+      echo "FATAL ERROR: check ./pack or get-files. Please use [ rpm | deb ] option. Aborted." 1>&2
+      exit 1
+      ;;
+esac

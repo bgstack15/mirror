@@ -1,9 +1,10 @@
 #!/bin/sh
 
 # working directory
-repodir=/mnt/mirror/ubuntu/example-debian/
+repodir=/srv/science/smith122/repo/deb/
 cd ${repodir}
 chmod 0644 *deb 1>/dev/null 2>&1
+restorecon -RF "${repodir}"
 
 # create the package index
 dpkg-scanpackages -m . > Packages

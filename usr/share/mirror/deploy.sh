@@ -14,7 +14,7 @@
 # Improve:
 #    * provide better package name and version parsing
 fiversion="2016-05-25a"
-deployversion="2016-07-14a"
+deployversion="2017-04-04a"
 
 usage() {
    less -F >&2 <<ENDUSAGE
@@ -24,10 +24,10 @@ version ${deployversion}
  -u usage   Show this usage block.
  -V version Show script version number.
  -c conffile Overrides default conffile value. Default is ${conffile}.
+ -n noupdate Do not execute the update script. Useful for serial deployments.
 Given a packagename and packageversion, this script will deploy the correct architecture type of package file to the specified locations.
 If debug level is 3 or less, the copy will actually be performed.
 See the conffile ${conffile} for examples.
- -n noupdate Do not execute the update script. Useful for serial deployments.
 Return values:
 0 Normal
 1 Help or version info displayed
@@ -120,7 +120,7 @@ esac
 . ${frameworkscript} || echo "$0: framework did not run properly. Continuing..." 1>&2
 conffile=/etc/mirror/deploy.conf
 logfile=${scriptdir}/${scripttrim}.${today}.out
-interestedparties="bgstack15@example.com"
+interestedparties="bgstack15@gmail.com"
 noupdate=0 # can be adjusted with a flag
 
 # REACT TO ROOT STATUS
@@ -212,7 +212,7 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
    for thiszone in ${zones[@]};
    do
       [[ ! "${thiszone}" = "input" ]] && {
-         debuglev 5 && ferror "Running zone ${thiszone}"
+         debuglev 5 && ferror "Running ${thiszone}"
          eval thislocation=\${${thiszone}location}
          if [[ -z "${thislocation}" ]] || [[ ! -d "${thislocation}" ]]; then continue; fi
 
@@ -243,14 +243,14 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
          # CALCULATE DESTINATION FILE
          destinationdir=$( { find "${thispackagedir}" -maxdepth 0 -type d; find "${thislocation}" -maxdepth 0 -type d; } 2>/dev/null | grep -viE "^$" | head -n1 )
          #debuglev 5 && ferror "destinationdir=${destinationdir}"
-         [[ ! -d "${destinationdir}" ]] && ferror "Zone ${thiszone} file ${sourcefile} cannot be copied to the invalid directory \"${destinationdir}\". Skipped." && continue
+         [[ ! -d "${destinationdir}" ]] && ferror "Skipped ${thiszone} file ${sourcefile}: cannot be copied to invalid directory \"${destinationdir}\"." && continue
          destinationfile=$( echo "${destinationdir}/$( basename "${sourcefile}" )" | sed -e 's!\/\+!\/!g;' )
          debuglev 5 && ferror "destinationfile=${destinationfile}"
 
          # PERFORM FILE COPY
          if [[ ! -f "${sourcefile}" ]];
          then
-            ferror "Sourcefile ${sourcefile} not found. Skipped the copy action." 
+            ferror "Skipped ${thiszone} source ${sourcefile}: not found."
          else
             fileaction copy "${sourcefile}" "${destinationfile}"
             thiszoneused=1
@@ -264,7 +264,7 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
                if [[ ! -f "${sourcetarfile}" ]];
                then
                   # link was yes, but tarball does not exist, so soft error.
-                  ferror "Sourcetarfile ${sourcetarfile} not found. Skipped the tar file symlink."
+                  ferror "Skipped ${thiszone} symlink for ${sourcetarfile}: not found."
                else
                   # CALCULATE DESTINATION TARBALL FILE
                   destinationtarfile="$( echo "${destinationdir}/$( basename "${sourcetarfile}" )" | sed -e 's!\/\+!\/!g;' )"
@@ -285,7 +285,7 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
             if test "${noupdate}" = "1";
             then
                # told to not execute any update scripts at all.
-               ferror "Skipping any execute scripts."
+               ferror "Skipping any execute scripts for ${thiszone}."
             else
                [[ -n "${thisupdatescript}" ]] && {
                   if [[ ! -x "${thisupdatescript}" ]];

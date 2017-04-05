@@ -13,13 +13,12 @@ type="";
 case "${thisflavor}" in
    redhat|rhel|centos|fedora|korora) type=rpm;;
    debian|ubuntu) type=dpkg;;
-   *) type=targz;;
-esac
+   *) type=targz;; esac
 
 echo " $@ " | grep -qiE -- "help|usage|\s-h\s|\s-\?" 1>/dev/null 2>&1 && {
    # display help and exit
    less -F <<EOF
-pack utility version 2017-02-07a-mirror
+pack utility version 2017-04-04a-mirror
 usage: pack [ rpm | deb | tar | scrub ] [ --debug | -d {0-10} ]
 Provides a single command for building a package. This script is customized to each package.
 optional arguments:
@@ -54,16 +53,15 @@ rpmbuilddir=~/rpmbuild/
 packagespecfile="${package}-${version}/usr/share/${package}/docs/${package}.spec"
 sed -i -n '1,/^\%files$/p;' "${rpmbuilddir}/SOURCES/${packagespecfile}"
 cd "${rpmbuilddir}/SOURCES/${package}-${version}"
-find * ! -type d ! -regex '.*?.swp' ! -regex '.*?DEBIAN.*?' | sed -e 's/^/\//;' -e 's/\(.*\.txt\)/%doc %attr(444, -, -) \1/;' -e 's/\(.*\.\(conf\|cron\)\|.*sudoers\.d\|\/usr\/share\/mirror\/scripts\/.\+\)/%config \1/;' -e 's/\(.*bin.*\)/%verify(link) \1/;' -e 's/\(.*\)\.py$/\1\.py\n\1\.pyc\n\1\.pyo/;' >> "${rpmbuilddir}/SOURCES/${packagespecfile}"
-rm -rf "${rpmbuilddir}/SOURCES/${package}-${shortversion}"
-cp -prf "${rpmbuilddir}/SOURCES/${package}-${version}" "${rpmbuilddir}/SOURCES/${package}-${shortversion}"
+"${rpmbuilddir}/SOURCES/${package}-${version}/usr/share/${package}/inc/get-files" rpm >> "${rpmbuilddir}/SOURCES/${packagespecfile}"
+rm -rf "${rpmbuilddir}/SOURCES/${package}-${shortversion}"; cp -prf "${rpmbuilddir}/SOURCES/${package}-${version}" "${rpmbuilddir}/SOURCES/${package}-${shortversion}"
 rm -rf "${rpmbuilddir}/SOURCES/${package}-${shortversion}/DEBIAN"
 cd "${rpmbuilddir}/SOURCES"
-rm -rf "${package}.tgz"; tar -zc --exclude='.git' -f "${package}.tgz" "${package}-${shortversion}" && rm -rf "${rpmbuilddir}/SOURCES/${package}-${shortversion}/"
+rm -rf "${package}.tgz"; tar -zc --exclude='.git' --exclude='README.md' -f "${package}.tgz" "${package}-${shortversion}"
 cp -p "${rpmbuilddir}/SOURCES/${packagespecfile}" "${rpmbuilddir}/SPECS"
-cd "${rpmbuilddir}/RPMS/noarch"
+mkdir -p "${rpmbuilddir}/RPMS/noarch"; cd "${rpmbuilddir}/RPMS/noarch" 2>/dev/null
 rpmbuild -bb "${rpmbuilddir}/SPECS/${package}.spec"
-rm -rf "${rpmbuilddir}/SOURCES/${package}.tgz"
+rm -rf "${rpmbuilddir}/SOURCES/${package}-${shortversion}/" "${rpmbuilddir}/SOURCES/${package}.tgz"
 
       ;;
    dpkg)

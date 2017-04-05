@@ -1,5 +1,5 @@
-File: etc/mirror/README.txt
-Package: mirror 1.0-9
+File: /usr/share/mirror/docs/README.txt
+Package: mirror
 Author: bgstack15@gmail.com
 Startdate: 2016-06-08
 Title: Readme file for mirror
@@ -19,12 +19,7 @@ Configure these files:
 /etc/httpd/sites/mirror.conf
 /usr/share/mirror/inc/rsync
 
-Select a storage directory. On the EXAMPLE mirror, we used an nfs mount for multiple locations.
---- BEGIN excerpt from mirror.example.com:/etc/fstab
-linux-nfs2.example.com:/vol/linux_mirror    /mnt/realmirror nfs     defaults,uid=1539249479 0 0
-/mnt/realmirror/mirror  /mnt/mirror                     none    bind    0 0
-/mnt/mirror             /var/www/html/mirror.example.com    none    bind    0 0
---- END
+Select a storage directory. This one is preconfigured for /srv/science/smith122/repo
 
 ## Scripts to run
 The files called by mirror-master are the ones that actually do the source and target selection and file operations. By default they are located in /etc/mirror/scripts/
@@ -77,7 +72,7 @@ New feature: deploy
 See its config file /etc/mirror/inc/deploy.conf
 
 2016-10-28 mirror 1.0-4
-Adding elemants for safe publishing on github
+Adding elements for safe publishing on github
 Added repos for linuxmint
 
 2016-11-11 mirror 1.0-5
@@ -99,3 +94,14 @@ Fixed dependency to bgscripts-core
 
 2017-02-08 mirror-1.0-9
 Updated scripts to use /usr/share/mirror/inc/rsync script
+
+2017-03-03 mirror-1.1-1
+Adapted for smith122 repos
+
+2017-03-04 mirror-1.1-2
+Fixed directories' ownership to this package so they are removed when the package is removed.
+
+2017-04-04 mirror-1.1-3
+Fixed deploy.sh to have more consistent and useful error messages
+Fixed deploy.conf to point to /srv/science for everything
+Changed deploy.conf to use package directories for deployment
