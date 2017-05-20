@@ -1,4 +1,4 @@
-# File: darmok:/etc/httpd/conf.d/local_mirror-ssl.cnf
+# File: storage1:/etc/httpd/conf.d/local_mirror-ssl.cnf
 # Author: bgstack15
 # Startdate: 2016-03-16
 # Title: Common SSL Config for Apache
@@ -7,7 +7,8 @@
 # Usage: in an ssl vhost, use command
 #    Include sites/local_mirror-ssl.cnf
 # Reference: jasper
-#   "Linux\Centos 7 Template\Adding the service httpd.docx"
+#    "Linux\Centos 7 Template\Adding the service httpd.docx"
+#    darmok:/etc/httpd/conf.d/local_mirror-ssl.cnf
 # Improve:
 # Document: Below this line
 SSLEngine on
@@ -22,8 +23,8 @@ SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+EC
         SSLOptions +StdEnvVars
 </Directory>
 
-SSLCertificateFile /etc/pki/tls/certs/darmok.crt
-SSLCertificateKeyFile /etc/pki/tls/private/darmok.key
+SSLCertificateFile /etc/pki/tls/certs/https-storage1.ipa.smith122.com.crt
+SSLCertificateKeyFile /etc/pki/tls/private/https-storage1.ipa.smith122.com-nopw.key
 
 SetEnvIf User-Agent ".*MSIE 4\.0b2.*"                 nokeepalive ssl-unclean-shutdown                 downgrade-1.0 force-response-1.0
 

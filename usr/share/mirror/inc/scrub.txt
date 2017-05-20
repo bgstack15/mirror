@@ -1,14 +1,14 @@
 # for scrubpy version 2016-11-16a or newer
-source /home/bgstack15/rpmbuild/SOURCES/mirror-1.1-3
+source /home/bgirton/rpmbuild/SOURCES/mirror-1.1-3
 target /home/work/mirror.clean
 ignore "tgz png gif jpg pyc pyo git swp ico"
 # rest of the lines are "OLD WORD" "NEW WORD"
-BGSTACK15	BGSTACK15
-Bgstack15	Bgstack15
-bgstack15 bgstack15
-BNAME	BNAME
-Bname	Bname
-bname	bname
-STACK15	STACK15
-Stack15	Stack15
-stack15	stack15
+BGIRTON	BGSTACK15
+Bgirton	Bgstack15
+bgirton bgstack15
+BRIAN	BNAME
+Brian	Bname
+brian	bname
+GIRTON	STACK15
+Girton	Stack15
+girton	stack15
