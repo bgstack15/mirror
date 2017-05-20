@@ -37,9 +37,9 @@ rm -rf ${buildroot}
 %dir /etc/mirror
 %dir /usr/share/mirror
 %dir /usr/share/mirror/examples
-%dir /usr/share/mirror/examples/examplerpm
 %dir /usr/share/mirror/examples/sites
-%dir /usr/share/mirror/examples/exampledeb
+%dir /usr/share/mirror/examples/deb
+%dir /usr/share/mirror/examples/rpm
 %dir /usr/share/mirror/inc
 %dir /usr/share/mirror/docs
 %dir /usr/share/mirror/scripts
@@ -47,34 +47,34 @@ rm -rf ${buildroot}
 %config /etc/cron.d/mirror.cron
 %config /etc/httpd/conf.d/local_mirror.conf
 /etc/httpd/conf.d/local_mirror-ssl.cnf
-%config /etc/mirror/deploy.conf
 %config /etc/mirror/mirror.conf
+%config /etc/mirror/deploy.conf
 /usr/share/httpd/icons/rpm.png
 /usr/share/httpd/icons/repo.png
-/usr/share/mirror/deploy.sh
-/usr/share/mirror/examples/examplerpm/FOOTER.html
-/usr/share/mirror/examples/examplerpm/update-smith122rpm.sh
-/usr/share/mirror/examples/examplerpm/HEADER.html
-/usr/share/mirror/examples/examplerpm/smith122rpm.repo
+/usr/share/httpd/icons/deb.png
 /usr/share/mirror/examples/FOOTER.html
 /usr/share/mirror/examples/favicon.png
 %config /usr/share/mirror/examples/sites/zz_proxy.conf
-/usr/share/mirror/examples/HEADER.html
-/usr/share/mirror/examples/exampledeb/FOOTER.html
-/usr/share/mirror/examples/exampledeb/update-smith122deb.sh
-/usr/share/mirror/examples/exampledeb/smith122deb.list
-/usr/share/mirror/examples/exampledeb/HEADER.html
-/usr/share/mirror/examples/exampledeb/smith122deb.gpg
 /usr/share/mirror/examples/favicon.ico
+/usr/share/mirror/examples/HEADER.html
+/usr/share/mirror/examples/deb/FOOTER.html
+/usr/share/mirror/examples/deb/smith122deb.list
+/usr/share/mirror/examples/deb/HEADER.html
+/usr/share/mirror/examples/deb/smith122deb.gpg
+/usr/share/mirror/examples/deb/update-smith122deb.sh
+/usr/share/mirror/examples/rpm/FOOTER.html
+/usr/share/mirror/examples/rpm/HEADER.html
+/usr/share/mirror/examples/rpm/smith122rpm.repo
+/usr/share/mirror/examples/rpm/update-smith122rpm.sh
 /usr/share/mirror/inc/get-files
-%doc %attr(444, -, -) /usr/share/mirror/inc/scrub.txt
-/usr/share/mirror/inc/pack
 /usr/share/mirror/inc/get-files-core
 /usr/share/mirror/inc/rsync
 /usr/share/mirror/inc/localize_git.sh
+%doc %attr(444, -, -) /usr/share/mirror/inc/scrub.txt
+/usr/share/mirror/inc/pack
 %doc %attr(444, -, -) /usr/share/mirror/docs/files-for-versioning.txt
-/usr/share/mirror/docs/mirror.spec
 %doc %attr(444, -, -) /usr/share/mirror/docs/packaging.txt
+/usr/share/mirror/docs/mirror.spec
 %doc %attr(444, -, -) /usr/share/mirror/docs/README.txt
 /usr/share/mirror/mirror-master.sh
 %config /usr/share/mirror/scripts/fedora-updates
@@ -90,4 +90,5 @@ rm -rf ${buildroot}
 %config /usr/share/mirror/scripts/linuxmint-isos
 %config /usr/share/mirror/scripts/rsyslog
 %config /usr/share/mirror/scripts/linuxmint-repos
+/usr/share/mirror/deploy.sh
 %verify(link) /usr/local/bin/deploy

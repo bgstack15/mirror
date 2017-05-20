@@ -57,7 +57,7 @@ cd "${rpmbuilddir}/SOURCES/${package}-${version}"
 rm -rf "${rpmbuilddir}/SOURCES/${package}-${shortversion}"; cp -prf "${rpmbuilddir}/SOURCES/${package}-${version}" "${rpmbuilddir}/SOURCES/${package}-${shortversion}"
 rm -rf "${rpmbuilddir}/SOURCES/${package}-${shortversion}/DEBIAN"
 cd "${rpmbuilddir}/SOURCES"
-rm -rf "${package}.tgz"; tar -zc --exclude='.git' --exclude='README.md' -f "${package}.tgz" "${package}-${shortversion}"
+rm -rf "${package}.tgz"; tar -zc --exclude='.git*' --exclude='README.md' -f "${package}.tgz" "${package}-${shortversion}"
 cp -p "${rpmbuilddir}/SOURCES/${packagespecfile}" "${rpmbuilddir}/SPECS"
 mkdir -p "${rpmbuilddir}/RPMS/noarch"; cd "${rpmbuilddir}/RPMS/noarch" 2>/dev/null
 rpmbuild -bb "${rpmbuilddir}/SPECS/${package}.spec"
