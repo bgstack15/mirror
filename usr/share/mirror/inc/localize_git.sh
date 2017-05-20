@@ -1,2 +1,2 @@
 #!/bin/sh
-\cp -pRf /home/work/mirror.clean/.git /home/bgirton/rpmbuild/SOURCES/mirror-1.1-3/
+\cp -pRf /home/work/mirror.clean/.git /home/bgirton-local/rpmbuild/SOURCES/mirror-1.1-4/

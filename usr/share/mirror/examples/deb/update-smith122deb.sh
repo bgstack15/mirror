@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # working directory
-repodir=/srv/science/smith122/repo/deb/
+repodir=/mnt/public/www/smith122/repo/deb/
 cd ${repodir}
 chmod 0644 *deb 1>/dev/null 2>&1
 restorecon -RF "${repodir}"

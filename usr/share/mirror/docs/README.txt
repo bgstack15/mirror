@@ -16,10 +16,12 @@ mirror is basically a collection of scripts that provide the sync instructions t
 ## Steps to take before using mirror for the first time
 Configure these files:
 /etc/mirror/mirror.conf
-/etc/httpd/sites/mirror.conf
+/etc/httpd/conf.d/mirror.conf
 /usr/share/mirror/inc/rsync
 
-Select a storage directory. This one is preconfigured for /srv/science/smith122/repo
+Select a storage directory. This one is preconfigured for /mnt/public/www/smith122/repo
+
+Generate a GPG key and modify update-smith122deb.sh to use it.
 
 ## Scripts to run
 The files called by mirror-master are the ones that actually do the source and target selection and file operations. By default they are located in /etc/mirror/scripts/
@@ -63,6 +65,9 @@ Examples:
 ### REFERENCE
 
 ### CREDITS
+Favicon by Lorc (http://lorcblog.blogspot.com/)
+http://game-icons.net/
+License: CC-BY 3.0
 Deb icon by franksouza183 (http://www.iconarchive.com/artist/franksouza183.html)
 http://www.iconarchive.com/show/fs-icons-by-franksouza183/Mimetypes-deb-icon.html
 License: GPL
