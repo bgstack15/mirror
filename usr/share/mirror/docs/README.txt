@@ -120,4 +120,5 @@ Fixed deploy.conf to point to /srv/science for everything
 Changed deploy.conf to use package directories for deployment
 
 2017-05-20 mirror-1.1-4
-- Adapted new icons for rpm, deb, and repos
+- Adapted new icons for rpm, deb, and repos.
+- Updated directories for storage1 in the Mersey network.

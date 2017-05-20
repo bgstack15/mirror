@@ -6,7 +6,8 @@
 # Purpose: To make it easy to deploy to the mirror a new version of a package
 # Package: mirror
 # History: 
-#    2017-02-06 added --noupdate option
+#    2017-02-06 Added --noupdate option
+#    2017-05-20 Added debugging info for thispackagedir. Also displays better error message when skipping source file for a zone due to its absence.
 # Usage: 
 # Reference: ftemplate.sh 2016-07-12a; framework.sh 2016-05-25a
 #    mirror-master from mirror-1.0-2.noarch.rpm
@@ -213,7 +214,8 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
    do
       [[ ! "${thiszone}" = "input" ]] && {
          debuglev 5 && ferror "Running ${thiszone}"
-         eval thislocation=\${${thiszone}location}
+         #eval thislocation=\${${thiszone}location}
+         eval eval thislocation=\${${thiszone}location}; location="${thislocation}"
          if [[ -z "${thislocation}" ]] || [[ ! -d "${thislocation}" ]]; then continue; fi
 
          # so the location exists
@@ -222,6 +224,8 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
          # DERIVE PACKAGE SOURCE FILE
          eval thisflavor=\${${thiszone}flavor}
          eval thispackagedir=\${${thiszone}packagedir}
+         eval eval thispackagedir=\${${thiszone}packagedir}
+         debuglev 5 && ferror "thispackagedir=${thispackagedir}"
          [[ -n "${thispackagedir}" ]] && eval thispackagedir="${thispackagedir}"
          case "${thisflavor}" in
             redhat|centos) # needs special attention to get architecture
@@ -250,7 +254,7 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
          # PERFORM FILE COPY
          if [[ ! -f "${sourcefile}" ]];
          then
-            ferror "Skipped ${thiszone} source ${sourcefile}: not found."
+            ferror "Skipped ${thiszone} source for ${thispackage}: not found."
          else
             fileaction copy "${sourcefile}" "${destinationfile}"
             thiszoneused=1
