@@ -62,6 +62,19 @@ Examples:
 
 ### REFERENCE
 
+### CREDITS
+Deb icon by franksouza183 (http://www.iconarchive.com/artist/franksouza183.html)
+http://www.iconarchive.com/show/fs-icons-by-franksouza183/Mimetypes-deb-icon.html
+License: GPL
+
+Rpm icon by Saki (http://www.iconarchive.com/artist/saki.html)
+http://www.iconarchive.com/show/nuoveXT-icons-by-saki/Mimetypes-rpm-icon.html
+License: GPL
+
+Repo icon adapted from https://commons.wikimedia.org/wiki/File:Documents_icon_-_noun_project_5020.svg
+Author: Dmitry Baranovskiy (http://thenounproject.com/DmitryBaranovskiy/)
+License: CC-BY 3.0
+
 ### CHANGELOG
 1.0-2 2016-06-10
 uses config file /etc/mirror/mirror.conf 
@@ -105,3 +118,6 @@ Fixed directories' ownership to this package so they are removed when the packag
 Fixed deploy.sh to have more consistent and useful error messages
 Fixed deploy.conf to point to /srv/science for everything
 Changed deploy.conf to use package directories for deployment
+
+2017-05-20 mirror-1.1-4
+- Adapted new icons for rpm, deb, and repos
