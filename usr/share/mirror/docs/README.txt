@@ -127,3 +127,6 @@ Changed deploy.conf to use package directories for deployment
 2017-05-20 mirror-1.1-4
 - Adapted new icons for rpm, deb, and repos.
 - Updated directories for storage1 in the Mersey network.
+
+2017-07-22 mirror-1.1-5
+- Rearranged directory structure to match current bgscripts standard.

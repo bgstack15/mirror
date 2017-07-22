@@ -1,7 +1,7 @@
 Summary: Mirror
 Name: mirror
 Version: 1.1
-Release: 4
+Release: 5
 License: CC BY-SA 4.0
 Group: Applications/System
 Source: mirror.tgz
