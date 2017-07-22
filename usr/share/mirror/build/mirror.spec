@@ -92,3 +92,8 @@ rm -rf ${buildroot}
 %config /usr/share/mirror/scripts/linuxmint-repos
 /usr/share/mirror/deploy.sh
 %verify(link) /usr/local/bin/deploy
+
+%changelog
+* Sat Jul 22 2017 B Stack <bgstack15@gmail.com> 1.1-5
+- Rearranged directory structure to match current bgscripts standard.
+- Updated content. See doc/README.txt.
