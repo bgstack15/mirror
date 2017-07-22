@@ -1,4 +1,0 @@
-inc/localize_git.sh
-inc/scrub.txt
-docs/README.txt
-docs/mirror.spec
