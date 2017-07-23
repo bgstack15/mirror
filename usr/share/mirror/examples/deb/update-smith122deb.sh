@@ -11,11 +11,12 @@ dpkg-scanpackages -m . > Packages
 cat Packages | gzip -9c > Packages.gz
 
 # create the Release file
+#Date: $(date -R)
 PKGS=$(wc -c Packages)
 PKGS_GZ=$(wc -c Packages.gz)
 cat <<EOF > Release
 Architectures: all
-Date: $(date -R)
+Date: $(date -u '+%a, %d %b %Y %T %Z')
 MD5Sum:
  $(md5sum Packages  | cut -d" " -f1) $PKGS
  $(md5sum Packages.gz  | cut -d" " -f1) $PKGS_GZ
