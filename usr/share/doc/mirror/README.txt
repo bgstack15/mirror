@@ -137,3 +137,4 @@ Changed deploy.conf to use package directories for deployment
 - Added update-tar example script.
 - Fixed deb repo html guide to have correct pathname for /etc/apt/sources.list.d/.
 - Fixed update-{deb,rpm,tar} scripts to match syntax, and chown files.
+- Fixed deploy.sh: allow packages to be saved to a symlinked directory.

@@ -245,7 +245,7 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
          debuglev 5 && ferror "sourcetarfile=${sourcetarfile}"
 
          # CALCULATE DESTINATION FILE
-         destinationdir=$( { find "${thispackagedir}" -maxdepth 0 -type d; find "${thislocation}" -maxdepth 0 -type d; } 2>/dev/null | grep -viE "^$" | head -n1 )
+         destinationdir="$( { test -d "$( readlink -f "$( find "${thispackagedir}" -maxdepth 0 \( -type d -o -type l \) )" )" && echo "${thispackagedir}"; find "${thislocation}" -maxdepth 0 -type d; } 2>/dev/null | grep -viE "^$" | head -n1 )"
          #debuglev 5 && ferror "destinationdir=${destinationdir}"
          [[ ! -d "${destinationdir}" ]] && ferror "Skipped ${thiszone} file ${sourcefile}: cannot be copied to invalid directory \"${destinationdir}\"." && continue
          destinationfile=$( echo "${destinationdir}/$( basename "${sourcefile}" )" | sed -e 's!\/\+!\/!g;' )
@@ -289,7 +289,7 @@ do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;'
             if test "${noupdate}" = "1";
             then
                # told to not execute any update scripts at all.
-               ferror "Skipping any execute scripts for ${thiszone}."
+               debuglev 1 && ferror "Skipping any execute scripts for ${thiszone}."
             else
                [[ -n "${thisupdatescript}" ]] && {
                   if [[ ! -x "${thisupdatescript}" ]];
