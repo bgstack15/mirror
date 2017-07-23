@@ -132,3 +132,4 @@ Changed deploy.conf to use package directories for deployment
 - Rearranged directory structure to match current bgscripts standard.
 - Fixed local_mirror httpd conf to include "AddIcon deb.png."
 - Fixed deb and rpm icons to have transparent backgrounds.
+- Added the tar repo to deploy.conf.
