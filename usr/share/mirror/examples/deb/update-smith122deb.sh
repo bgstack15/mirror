@@ -1,19 +1,24 @@
 #!/bin/sh
+# update-deb.sh
 
-# working directory
+# Prepare directory and files
 repodir=/mnt/public/www/smith122/repo/deb/
-cd ${repodir}
-chmod 0644 *deb 1>/dev/null 2>&1
+ownership="apache:admins"
+filetypes="deb"
+find "${repodir}" -exec chown "${ownership}" {} + 1>/dev/null 2>&1
+find "${repodir}" -type f -exec chmod "0644" {} + 1>/dev/null 2>&1
+find "${repodir}" -type d -exec chmod "0755" {} + 1>/dev/null 2>&1
+chmod 0754 "$0"
 restorecon -RF "${repodir}"
 
-# create the package index
+# Prepare repo for deb
+cd "${repodir}"
 dpkg-scanpackages -m . > Packages
-cat Packages | gzip -9c > Packages.gz
+gzip -9c < Packages > Packages.gz
 
 # create the Release file
-#Date: $(date -R)
-PKGS=$(wc -c Packages)
-PKGS_GZ=$(wc -c Packages.gz)
+PKGS="$(wc -c Packages)"
+PKGS_GZ="$(wc -c Packages.gz)"
 cat <<EOF > Release
 Architectures: all
 Date: $(date -u '+%a, %d %b %Y %T %Z')
