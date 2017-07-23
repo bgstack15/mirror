@@ -130,4 +130,5 @@ Changed deploy.conf to use package directories for deployment
 
 2017-07-23 mirror-1.1-5
 - Rearranged directory structure to match current bgscripts standard.
-- Fixed local_mirror httpd conf to include "AddIcon deb.png"
+- Fixed local_mirror httpd conf to include "AddIcon deb.png."
+- Fixed deb and rpm icons to have transparent backgrounds.
