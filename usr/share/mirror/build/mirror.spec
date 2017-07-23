@@ -40,6 +40,7 @@ rm -rf ${buildroot}
 %dir /usr/share/mirror/inc
 %dir /usr/share/mirror/examples
 %dir /usr/share/mirror/examples/rpm
+%dir /usr/share/mirror/examples/tar
 %dir /usr/share/mirror/examples/deb
 %dir /usr/share/mirror/examples/sites
 %dir /usr/share/mirror/scripts
@@ -48,10 +49,9 @@ rm -rf ${buildroot}
 %config /etc/mirror/deploy.conf
 %config /etc/httpd/conf.d/local_mirror.conf
 /etc/httpd/conf.d/local_mirror-ssl.cnf
-%config /etc/sudoers.d/50_mirror-sudo
+%config %attr(440, root, root) /etc/sudoers.d/50_mirror-sudo
 %verify(link) /usr/local/bin/deploy
 %doc %attr(444, -, -) /usr/share/mirror/build/files-for-versioning.txt
-/usr/share/mirror/build/get-files-core
 /usr/share/mirror/build/localize_git.sh
 /usr/share/mirror/build/get-files
 %doc %attr(444, -, -) /usr/share/mirror/build/scrub.txt
@@ -68,6 +68,7 @@ rm -rf ${buildroot}
 /usr/share/mirror/examples/rpm/smith122rpm.repo
 /usr/share/mirror/examples/rpm/update-smith122rpm.sh
 /usr/share/mirror/examples/favicon.ico
+/usr/share/mirror/examples/tar/update-smith122tar.sh
 /usr/share/mirror/examples/deb/FOOTER.html
 /usr/share/mirror/examples/deb/smith122deb.gpg
 /usr/share/mirror/examples/deb/smith122deb.list
