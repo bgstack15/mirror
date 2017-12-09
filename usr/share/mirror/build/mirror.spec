@@ -1,7 +1,7 @@
 Summary: Mirror
 Name: mirror
 Version: 1.1
-Release: 5
+Release: 6
 License: CC BY-SA 4.0
 Group: Applications/System
 Source: mirror.tgz
@@ -97,6 +97,9 @@ rm -rf ${buildroot}
 /usr/share/httpd/icons/repo.png
 
 %changelog
+* Sat Dec  9 2017 B Stack <bgstack15@gmail.com> 1.1-6
+- Updated content. See doc/README.txt.
+
 * Sat Jul 22 2017 B Stack <bgstack15@gmail.com> 1.1-5
 - Rearranged directory structure to match current bgscripts standard.
 - Updated content. See doc/README.txt.

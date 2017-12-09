@@ -5,7 +5,7 @@
 
 #RSYNCOPTIONS="--delete-during -l -p -r -t -v"
 RSYNCOPTIONS="-rlptv --del"
-MIRRORDIR='/mnt/mirror'
+MIRRORDIR='/mnt/narcissus/mirror'
 
 function rmirror {
     if [ -z "$2" ] ; then

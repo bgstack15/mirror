@@ -138,3 +138,6 @@ Changed deploy.conf to use package directories for deployment
 - Fixed deb repo html guide to have correct pathname for /etc/apt/sources.list.d/.
 - Fixed update-{deb,rpm,tar} scripts to match syntax, and chown files.
 - Fixed deploy.sh: allow packages to be saved to a symlinked directory.
+
+* Sat Dec  9 2017 B Stack <bgstack15@gmail.com> 1.1-6
+- Work in progress

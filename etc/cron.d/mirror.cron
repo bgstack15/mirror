@@ -1,4 +1,6 @@
 # File: /etc/cron.d/mirror.cron
 # Package: mirror
-# Purpose: Run mirror right after work hours each day
-05	17	*	*	*	root	/usr/share/mirror/mirror-master.sh
+# Purpose: Run mirror during work hours but overnight on weekends.
+00	8	*	*	1-5	root	/usr/share/mirror/mirror-master.sh 1>/dev/null 2>&1
+00	1	*	*	0,6	root	/usr/share/mirror/mirror-master.sh 1>/dev/null 2>&1
+
