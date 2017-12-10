@@ -1,21 +1,19 @@
 #!/bin/sh
-# File: /usr/share/mirror/deploy.sh
+# Filename: deploy.sh
+# Location: 
 # Author: bgstack15@gmail.com
-# Startdate: 2016-07-14 09:53:09
-# Title: Script that Deploys a Package
-# Purpose: To make it easy to deploy to the mirror a new version of a package
-# Package: mirror
+# Startdate: 2017-12-09 14:21:26
+# Title: Script that Deploys Packages and Files to Directories Served to the Web
+# Purpose: 
+# Package: 
 # History: 
-#    2017-02-06 Added --noupdate option
-#    2017-05-20 Added debugging info for thispackagedir. Also displays better error message when skipping source file for a zone due to its absence.
+#    2017-12-09 rewrite of deploy1.sh
 # Usage: 
-# Reference: ftemplate.sh 2016-07-12a; framework.sh 2016-05-25a
-#    mirror-master from mirror-1.0-2.noarch.rpm
-# This script has a symlink: /usr/local/bin/deploy
+# Reference: ftemplate.sh 2017-11-11a; framework.sh 2017-11-11a
+#    sed nongreedy match https://stackoverflow.com/a/1103159/3569534
 # Improve:
-#    * provide better package name and version parsing
-fiversion="2016-05-25a"
-deployversion="2017-04-04a"
+fiversion="2017-11-11a"
+deployversion="2017-12-09a"
 
 usage() {
    less -F >&2 <<ENDUSAGE
@@ -24,123 +22,142 @@ version ${deployversion}
  -d debug   Show debugging info, including parsed variables.
  -u usage   Show this usage block.
  -V version Show script version number.
- -c conffile Overrides default conffile value. Default is ${conffile}.
+ -c conf    Read in this config file. Default is ${default_infile1}.
  -n noupdate Do not execute the update script. Useful for serial deployments.
 Given a packagename and packageversion, this script will deploy the correct architecture type of package file to the specified locations.
 If debug level is 3 or less, the copy will actually be performed.
 See the conffile ${conffile} for examples.
 Return values:
-0 Normal
-1 Help or version info displayed
-2 Count or type of flaglessvals is incorrect
-3 Incorrect OS type
-4 Unable to find dependency
-5 Not run as root or sudo
-6 Config is invalid
+ 0 Normal
+ 1 Help or version info displayed
+ 2 Count or type of flaglessvals is incorrect
+ 3 Incorrect OS type
+ 4 Unable to find dependency
+ 5 Not run as root or sudo
 Debug levels:
-2 Perform file actions
-3 Perform file actions and display file copy
-4 Display only
-5 More debug info
+0 silent operation
+2 File actions
+4 Display only. DOES NOT PERFORM ANY FILE ACTIONS if debuglev >= 4.
+5 All variables from conf file
 ENDUSAGE
-}
-
-function fexit {
-   errornum="${1}"; shift
-   ferror "$@"
-   exit "${errornum}"
-}
-
-function fileaction {
-   thisaction="${1}"
-   thisleftfile="${2}"
-   thisrightfile="${3}"
-   case "${thisaction}" in
-      copy) thisfacommand="/bin/cp -p";;
-      symlink) thisfacommand="/bin/ln -sf";;
-      *) thisfacommand=echo;;
-   esac
-   debuglev 2 && { ferror ${thisfacommand}  "${thisleftfile}" "${thisrightfile}"; }
-   ! debuglev 4 && { ${thisfacommand} "${thisleftfile}" "${thisrightfile}"; } 2>&1 | grep -viE "failed to preserve ownership for"
 }
 
 # DEFINE FUNCTIONS
 
+fileaction() {
+   # call: fileaction copy ${thisfile} ${destdir}
+   debuglev 11 && ferror "CALLED: fileaction $@"
+   __thisaction="${1}"
+   __thisleftfile="${2}"
+   ! test -d "${3}" && mkdir -p "${3}"
+   __thisrightdir="$( fwhich "${3}" )"
+   case "${__thisaction}" in
+      copy) __thisfacommand="/bin/cp -p";;
+      symlink) __thisfacommand="/bin/ln -sf"; ferror "fileaction symlink not supported any more. Continuing..." && break ;;
+      *) __thisfacommand=echo;;
+   esac
+   debuglev 2 && { ferror ${__thisfacommand}  "${__thisleftfile}" "${__thisrightdir}/"; }
+   ! debuglev 4 && { ${__thisfacommand} "${__thisleftfile}" "${__thisrightdir}"; } 2>&1 | grep -viE "failed to preserve ownership for|preserving times for.*: Operation not permitted"
+   thiszoneused=1
+}
+
 # DEFINE TRAPS
 
-function clean_deploy {
-   #rm -f $logfile >/dev/null 2>&1
-   [ ] #use at end of entire script if you need to clean up tmpfiles
+clean_deploy() {
+   # use at end of entire script if you need to clean up tmpfiles
+   rm -f ${tmpfile1} 1>/dev/null 2>&1
+   :
 }
 
-function CTRLC {
-   #trap "CTRLC" 2
-   [ ] #useful for controlling the ctrl+c keystroke
+CTRLC() {
+   # use with: trap "CTRLC" 2
+   # useful for controlling the ctrl+c keystroke
+   :
 }
 
-function CTRLZ {
-   #trap "CTRLZ" 18
-   [ ] #useful for controlling the ctrl+z keystroke
+CTRLZ() {
+   # use with: trap "CTRLZ" 18
+   # useful for controlling the ctrl+z keystroke
+   :
 }
 
-function parseFlag {
-   flag=$1
+parseFlag() {
+   flag="$1"
    hasval=0
-   case $flag in
+   case ${flag} in
       # INSERT FLAGS HERE
       "d" | "debug" | "DEBUG" | "dd" ) setdebug; ferror "debug level ${debug}";;
       "u" | "usage" | "help" | "h" ) usage; exit 1;;
       "V" | "fcheck" | "version" ) ferror "${scriptfile} version ${deployversion}"; exit 1;;
-      #"i" | "infile" | "inputfile" ) getval;infile1=$tempval;;
-      "c" | "conffile" ) getval;conffile=$tempval;;
-      "n" | "noupdate" ) noupdate=1;;
+      #"i" | "infile" | "inputfile" ) getval; infile1=${tempval};;
+      "c" | "conf" | "conffile" | "config" ) getval; infile1="${tempval}";;
+      "n" | "noupdate" | "no-update" ) noupdate=1;;
    esac
    
-   debuglev 10 && { [[ hasval -eq 1 ]] && ferror "flag: $flag = $tempval" || ferror "flag: $flag"; }
+   debuglev 10 && { test ${hasval} -eq 1 && ferror "flag: ${flag} = ${tempval}" || ferror "flag: ${flag}"; }
 }
 
 # DETERMINE LOCATION OF FRAMEWORK
-while read flocation; do if [[ -x $flocation ]] && [[ $( $flocation --fcheck ) -ge 20160229 ]]; then frameworkscript=$flocation; break; fi; done <<EOFLOCATIONS
+while read flocation; do if test -x ${flocation} && test "$( ${flocation} --fcheck )" -ge 20171111; then frameworkscript="${flocation}"; break; fi; done <<EOFLOCATIONS
 ./framework.sh
-/usr/bgscripts/framework.sh
+${scriptdir}/framework.sh
+~/bin/bgscripts/framework.sh
+~/bin/framework.sh
+~/bgscripts/framework.sh
+~/framework.sh
+/usr/local/bin/bgscripts/framework.sh
+/usr/local/bin/framework.sh
+/usr/bin/bgscripts/framework.sh
+/usr/bin/framework.sh
+/bin/bgscripts/framework.sh
+/usr/local/share/bgscripts/framework.sh
 /usr/share/bgscripts/framework.sh
 EOFLOCATIONS
-[[ -z "$frameworkscript" ]] && echo "$0: framework not found. Aborted." 1>&2 && exit 4
-
-# REACT TO OPERATING SYSTEM TYPE
-case $( uname -s ) in
-   AIX) [ ];;
-   Linux) [ ];;
-   *) echo "$scriptfile: 3. Indeterminate OS: $( uname -s )" 1>&2 && exit 3;;
-esac
+test -z "${frameworkscript}" && echo "$0: framework not found. Aborted." 1>&2 && exit 4
 
 # INITIALIZE VARIABLES
 # variables set in framework:
 # today server thistty scriptdir scriptfile scripttrim
 # is_cronjob stdin_piped stdout_piped stderr_piped sendsh sendopts
 . ${frameworkscript} || echo "$0: framework did not run properly. Continuing..." 1>&2
-conffile=/etc/mirror/deploy.conf
+default_infile1=/etc/mirror/deploy.conf
+infile1="${default_infile1}"
+outfile1=
 logfile=${scriptdir}/${scripttrim}.${today}.out
-interestedparties="bgstack15@gmail.com"
-noupdate=0 # can be adjusted with a flag
+tmpfile1="$( mktemp )"
+define_if_new interestedparties "bgstack15@gmail.com"
+# SIMPLECONF
+define_if_new default_conffile "/etc/deploy/deploy.conf"
+define_if_new defuser_conffile ~/.config/deploy/deploy.conf
 
-# REACT TO ROOT STATUS
-case $is_root in
-   1) # proper root
-      [ ] ;;
-   sudo|"") # sudo to root or not root at all
-      ferror "${scriptfile}: 5. Please run as root. Aborted."
-      exit 5
-      ;;
+# REACT TO OPERATING SYSTEM TYPE
+case $( uname -s ) in
+   Linux) : ;;
+   FreeBSD) : ;;
+   *) ferror "${scriptfile}: 3. Indeterminate OS: $( uname -s )" && exit 3;;
 esac
 
+## REACT TO ROOT STATUS
+#case ${is_root} in
+#   1) # proper root
+#      : ;;
+#   sudo) # sudo to root
+#      : ;;
+#   "") # not root at all
+#      #ferror "${scriptfile}: 5. Please run as root or sudo. Aborted."
+#      #exit 5
+#      :
+#      ;;
+#esac
+
 # SET CUSTOM SCRIPT AND VALUES
-#setval 1 sendsh sendopts<<EOFSENDSH      # if $1="1" then setvalout="critical-fail" on failure
-#/usr/local/bin/bgscripts/send.sh -hs     #                setvalout maybe be "fail" otherwise
-#/usr/local/bin/send.sh -hs               # on success, setvalout="valid-sendsh"
+#setval 1 sendsh sendopts<<EOFSENDSH     # if $1="1" then setvalout="critical-fail" on failure
+#/usr/local/share/bgscripts/send.sh -hs  # setvalout maybe be "fail" otherwise
+#/usr/share/bgscripts/send.sh -hs        # on success, setvalout="valid-sendsh"
+#/usr/local/bin/send.sh -hs
 #/usr/bin/mail -s
 #EOFSENDSH
-#[[ "$setvalout" = "critical-fail" ]] && ferror "${scriptfile}: 4. mailer not found. Aborted." && exit 4
+#test "${setvalout}" = "critical-fail" && ferror "${scriptfile}: 4. mailer not found. Aborted." && exit 4
 
 # VALIDATE PARAMETERS
 # objects before the dash are options, which get filled with the optvals
@@ -148,165 +165,200 @@ esac
 validateparams packagename packageversion - "$@"
 
 # CONFIRM TOTAL NUMBER OF FLAGLESSVALS IS CORRECT
-if [[ $thiscount -lt 2 ]];
+if test ${thiscount} -lt 2;
 then
-   ferror "${scriptfile}: 2. Invalid packagename and version. Aborted."
-   exit 2
+   # see if packagename has the version as well.
+   if echo "${packagename}" | grep -qE -- '-[0-9]' ;
+   then 
+      # FINDTHIS split name from version
+      packageversion="$( echo "${packagename}" | sed -r -e 's/^[^-]*-([0-9])/\1/;' )"
+      packagename="$( echo "${packagename}" | sed -r -e "s/-${packageversion}//;" )"
+   else
+     ferror "${scriptfile}: 2. Invalid packagename \"${packagename}\" and version \"${packageversion}\". Aborted."
+     exit 2
+   fi
 fi
 
+## LOAD CONFIG FROM SIMPLECONF
+## This section follows a simple hierarchy of precedence, with first being used:
+##    1. parameters and flags
+##    2. environment
+##    3. config file
+##    4. default user config: ~/.config/script/script.conf
+##    5. default config: /etc/script/script.conf
+#if test -f "${conffile}";
+#then
+#   get_conf "${conffile}"
+#else
+#   if test "${conffile}" = "${default_conffile}" || test "${conffile}" = "${defuser_conffile}"; then :; else test -n "${conffile}" && ferror "${scriptfile}: Ignoring conf file which is not found: ${conffile}."; fi
+#fi
+#test -f "${defuser_conffile}" && get_conf "${defuser_conffile}"
+#test -f "${default_conffile}" && get_conf "${default_conffile}"
+
 # CONFIGURE VARIABLES AFTER PARAMETERS
+if ! test -f "${infile1}" ;
+then
+   ferror "${scriptfile}: Cannot read requested conf file \"${infile1}\". Using defaults from \"${default_infile1}\". Continuing..."
+   infile1="${default_infile1}"
+fi
 
-## READ CONFIG FILE TEMPLATE
+# START READ CONFIG FILE TEMPLATE
 zonecount=0
-[[ 1 -eq 1 ]] && { # REMOVE THIS LINE TO USE THE CONFIG FILE PARSER TEMPLATE
-[[ ! -f "${conffile}" ]] && ferror "${scriptfile}: 4. Conffile not found: ${conffile}. Aborted." && exit 4
-oIFS="${IFS}"; IFS=$'\n'
-infiledata=( $( sed ':loop;/^\/\*/{s/.//;:ccom;s,^.[^*]*,,;/^$/n;/^\*\//{s/..//;bloop;};bccom;}' "${conffile}") ) #the crazy sed removes c style multiline comments
-IFS="${oIFS}"
-for line in "${infiledata[@]}";
-do line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;' ); [[ -n "${line}" ]] && {
+oIFS="${IFS}"; IFS="$( printf '\n' )"
+infiledata=$( ${sed} ':loop;/^\/\*/{s/.//;:ccom;s,^.[^*]*,,;/^$/n;/^\*\//{s/..//;bloop;};bccom;}' "${infile1}") #the crazy sed removes c style multiline comments
+IFS="${oIFS}"; infilelines=$( echo "${infiledata}" | wc -l )
+{ echo "${infiledata}"; echo "ENDOFFILE"; } | {
+   while read line; do
    # the crazy sed removes leading and trailing whitespace, blank lines, and comments
-   debuglev 8 && ferror "line=\"$line\""
-   if echo "${line}" | grep -qiE "\[.*\]";
+   if test ! "${line}" = "ENDOFFILE";
    then
-      # new zone
-      zone=$( echo "${line}" | tr -d '[]' )
-      (( zonecount += 1 ))
-      zones[${zonecount}]="${zone}"
-      debuglev 7 && ferror "zone=${zone}"
+      line=$( echo "${line}" | sed -e 's/^\s*//;s/\s*$//;/^[#$]/d;s/\s*[^\]#.*$//;' )
+      if test -n "${line}";
+      then
+         debuglev 8 && ferror "line=\"${line}\""
+         if echo "${line}" | grep -qiE "\[.*\]";
+         then
+            # new zone
+            zone=$( echo "${line}" | tr -d '[]' )
+            debuglev 7 && ferror "zone=${zone}"
+            zonecount=$(( ${zonecount} + 1 ))
+            zones[${zonecount}]=${zone}
+         else
+            # directive
+            varname=$( echo "${line}" | awk -F= '{print $1}' )
+            varval=$( echo "${line}" | awk -F= '{$1=""; printf "%s", $0}' | sed 's/^ //;' )
+            debuglev 7 && ferror "X_${zone}_${varname}=\"${varval}\""
+            # simple define variable
+            #eval "${zone}${varname}=\${varval}"
+            eval "X_${zone}_${varname}=\${varval}"
+         fi
+         ## this part is untested
+         #read -p "Please type something here:" response < ${thistty}
+         #echo "${response}"
+      fi
    else
-      # directive
-      varname=$( echo "${line}" | awk -F= '{print $1}' )
-      varval=$( echo "${line}" | awk -F= '{$1=""; printf "%s", $0}' | sed 's/^ //;' )
-      #debuglev 7 && ferror "${zone}$( eval echo ${varname}=\\\"${varval}\\\" )" #evaluates the variables in the varval
-      debuglev 7 && ferror "${zone}${varname}=\"${varval}\""
-      # simple define variable
-      eval "${zone}${varname}=\${varval}"
-   fi
-   #read -p "Please type something here:" response < $thistty
-   #echo "$response"
-}; done
-} # AND THIS LINE
-#echo "zonecount=${zonecount}"
-#for word in ${zones[@]}; do echo ${word}; done
-
-## CONFIRM the input zone exists
-[[ -z "${inputtype}" ]] || [[ ! "${inputtype}" = "input" ]] && fexit 6 "Invalid inputtype: \"${inputtype}\". Must be \"input\" and in zone named \"input\". Aborted."
-[[ -z "${inputlocation}" ]] || [[ ! -d "${inputlocation}" ]] && fexit 6 "Invalid inputlocation: \"${inputlocation}\". Confirm directory exists. Aborted."
-[[ -n "${inputpackagedir}" ]] && eval inputpackagedir="${inputpackagedir}"
 
 ## REACT TO BEING A CRONJOB
-#if [[ $is_cronjob -eq 1 ]];
+#if test ${is_cronjob} -eq 1;
 #then
-#   [ ]
+#   :
 #else
-#   [ ]
+#   :
 #fi
 
 # SET TRAPS
 #trap "CTRLC" 2
 #trap "CTRLZ" 18
-#trap "clean_deploy" 0
+trap "clean_deploy" 0
+
+## DEBUG SIMPLECONF
+#debuglev 5 && {
+#   ferror "Using values"
+#   # used values: EX_(OPT1|OPT2|VERBOSE)
+#   set | grep -iE "^EX_" 1>&2
+#}
+
+# Debug section
+debuglev 5 &&  set | grep -E '^(X_|zones=|packagename|packageversion)' 1>&2
+
+## CONFIRM the input zone exists
+[[ -z "${X_input_type}" ]] || [[ ! "${X_input_type}" = "input" ]] && fexit 6 "Invalid inputtype: \"${X_input_type}\". Must be \"input\" and in zone named \"input\". Aborted."
+[[ -z "${X_input_location}" ]] || [[ ! -d "${X_input_location}" ]] && fexit 6 "Invalid inputlocation: \"${X_input_location}\". Confirm directory exists. Aborted."
+# [[ -n "${X_input_packagedir}" ]] && eval X_input_packagedir="${X_input_packagedir}"
 
 # MAIN LOOP
 #{
-   for thiszone in ${zones[@]};
+   for thiszone in ${zones[@]} ;
    do
-      [[ ! "${thiszone}" = "input" ]] && {
-         debuglev 5 && ferror "Running ${thiszone}"
-         #eval thislocation=\${${thiszone}location}
-         eval eval thislocation=\${${thiszone}location}; location="${thislocation}"
-         if [[ -z "${thislocation}" ]] || [[ ! -d "${thislocation}" ]]; then continue; fi
+      eval thistype="\${X_${thiszone}_type}"
+      case "${thistype}" in
+         input)
+            #echo "INPUT ZONE IS HERE"
+            eval thisinputlocation="\${X_input_location}"
+            eval thisinputpackagedir="$( eval echo "\${X_input_packagedir}" | sed -r -e "s/\\$\{(location)/\$\{X_${thiszone}_\1/g;" )"
+            ;;
+         destination)
+            #set | grep -E "X_${thiszone}_"
+            eval thisflavor="\${X_${thiszone}_flavor}"
+            eval thislocation="\${X_${thiszone}_location}"
+            eval thisupdatescript="\${X_${thiszone}_updatescript}"
+            eval thispackagedir="$( eval echo "\${X_${thiszone}_packagedir}" | sed -r -e "s/\\$\{(location)/\$\{X_${thiszone}_\1/g;" )"
 
-         # so the location exists
-         thiszoneused=0
+            #echo "------------"
+            #echo "thislocation=${thislocation}"
+            #echo "thispackagedir=${thispackagedir}"
+            
+            # find the files to move to thispackagedir
+            notregex=''
+            case "${thisflavor}" in
+               rpm | centos | redhat | fedora | korora )
+                  filetyperegex='.*.rpm'
+                  ;;
+               deb | debian | ubuntu | devuan | mint )
+                  filetyperegex='.*.deb'
+                  ;;
+               freebsd | bsd )
+                  filetyperegex='.*freebsd.*\(.tar.gz\|.tgz\)'
+                  ;;
+               tar | tarball | targz | tar.gz )
+                  filetyperegex='.*\(.tar.gz\|.tgz\)'
+                  notregex='.*freebsd.*'
+                  ;;
+               * )
+                  ferror "For zone \"${thiszone}\", will use default flavor \"tarball\"."
+                  filetyperegex='.*\(.tar.gz\|.tgz\)'
+                  notregex='.*freebsd.*'
+                  ;;
+            esac
+            filetyperegex=".*${packagename}-${packageversion}.*${filetyperegex}"
+            #echo find "${thisinputpackagedir}" -type f -regex "${filetyperegex}" ! -regex "${notregex}" 
+            find "${thisinputpackagedir}" -type f -regex "${filetyperegex}" ! -regex "${notregex}" > "${tmpfile1}"
 
-         # DERIVE PACKAGE SOURCE FILE
-         eval thisflavor=\${${thiszone}flavor}
-         eval thispackagedir=\${${thiszone}packagedir}
-         eval eval thispackagedir=\${${thiszone}packagedir}
-         debuglev 5 && ferror "thispackagedir=${thispackagedir}"
-         [[ -n "${thispackagedir}" ]] && eval thispackagedir="${thispackagedir}"
-         case "${thisflavor}" in
-            redhat|centos) # needs special attention to get architecture
-               sourcefile=$( { find "${inputpackagedir}" -regex ".*${packagename}-${packageversion}.*" -regex ".*.rpm"; find "${inputlocation}" -regex ".*${packagename}-${packageversion}.*" -regex ".*.rpm";} 2>/dev/null | head -n1 )
-               ;;
-            debian|ubuntu)
-               sourcefile=$( { find "${inputpackagedir}" -regex ".*${packagename}-${packageversion}.*" -regex ".*.deb"; find "${inputlocation}" -regex ".*${packagename}-${packageversion}.*" -regex ".*.deb";} 2>/dev/null | head -n1 )
-               ;;
-            *) # including tarball, tar
-               sourcefile=$( { find "${inputpackagedir}" -regex ".*${packagename}-${packageversion}.*" -regex ".*.master.tgz"; find "${inputlocation}" -regex ".*${packagename}-${packageversion}.*" -regex ".*.master.tgz"; } 2>/dev/null | head -n1 )
-               ;;
-         esac
+            # perform file action
+            thiszoneused=0
+            while read leftfile ;
+            do
+               fileaction copy "${leftfile}" "${thispackagedir}/"
+            done < "${tmpfile1}"
 
-         # DERIVE TARBALL FILE
-         sourcetarfile=$( { find "${inputpackagedir}" -regex ".*${packagename}-${packageversion}.*" -regex ".*.master.tgz"; find "${inputlocation}" -regex ".*${packagename}-${packageversion}.*" -regex ".*.master.tgz"; } 2>/dev/null | head -n1 )
-         debuglev 5 && ferror "sourcefile=${sourcefile}"
-         debuglev 5 && ferror "sourcetarfile=${sourcetarfile}"
-
-         # CALCULATE DESTINATION FILE
-         destinationdir="$( { test -d "$( readlink -f "$( find "${thispackagedir}" -maxdepth 0 \( -type d -o -type l \) )" )" && echo "${thispackagedir}"; find "${thislocation}" -maxdepth 0 -type d; } 2>/dev/null | grep -viE "^$" | head -n1 )"
-         #debuglev 5 && ferror "destinationdir=${destinationdir}"
-         [[ ! -d "${destinationdir}" ]] && ferror "Skipped ${thiszone} file ${sourcefile}: cannot be copied to invalid directory \"${destinationdir}\"." && continue
-         destinationfile=$( echo "${destinationdir}/$( basename "${sourcefile}" )" | sed -e 's!\/\+!\/!g;' )
-         debuglev 5 && ferror "destinationfile=${destinationfile}"
-
-         # PERFORM FILE COPY
-         if [[ ! -f "${sourcefile}" ]];
-         then
-            ferror "Skipped ${thiszone} source for ${thispackage}: not found."
-         else
-            fileaction copy "${sourcefile}" "${destinationfile}"
-            thiszoneused=1
-         fi
-
-         # IF ZONELINK
-         eval thislink=\${${thiszone}link}
-         case "${thislink}" in
-            "1"|"y"|"yes"|"Y"|"YES")
-               # have already derived tarball file
-               if [[ ! -f "${sourcetarfile}" ]];
-               then
-                  # link was yes, but tarball does not exist, so soft error.
-                  ferror "Skipped ${thiszone} symlink for ${sourcetarfile}: not found."
-               else
-                  # CALCULATE DESTINATION TARBALL FILE
-                  destinationtarfile="$( echo "${destinationdir}/$( basename "${sourcetarfile}" )" | sed -e 's!\/\+!\/!g;' )"
-
-                  # PERFORM TARBALL SYMLINK
-                  fileaction symlink "${sourcetarfile}" "${destinationtarfile}"
-               fi
-               ;;
-            *) # no
-               [ ]
-               ;;
-         esac
-
-         # IF ZONE WAS UPDATED
-         eval thisupdatescript=\${${thiszone}updatescript}
-         if [[ thiszoneused -ne 0 ]];
-         then
-            if test "${noupdate}" = "1";
+            # execute update script
+            if ! test "${thiszoneused}" = "0" ;
             then
-               # told to not execute any update scripts at all.
-               debuglev 1 && ferror "Skipping any execute scripts for ${thiszone}."
-            else
-               [[ -n "${thisupdatescript}" ]] && {
-                  if [[ ! -x "${thisupdatescript}" ]];
+               #echo "THISZONEUSED"
+               if ! test "${noupdate}" = "1" ;
+               then
+                  #echo "NOUPDATE IS ZERO"
+                  if test -n "${thisupdatescript}" ;
                   then
-                     ferror "Cannot execute the updatescript ${thisupdatescript}. Skipped."
+                     #echo "THISUPDATESCRIPT IS NOT NULL"
+                     if test -x "${thisupdatescript}" ;
+                     then
+                        debuglev 2 && ferror "Executing updatescript \"${thisupdatescript}\""
+                        ! debuglev 4 && fsudo "${thisupdatescript}"
+                     else
+                        ferror "${scriptfile}: Unable to execute updatescript \"${thisupdatescript}\". Continuing..."
+                     fi
                   else
-                     # is executable 
-                     debuglev 2 && ferror "Execute ${thisupdatescript}"
-                     ! debuglev 4 && ${thisupdatescript}
+                     # no updatescript specified, so pass
+                     :
                   fi
-               }
+               else
+                  # noupdate=1, which means do not call the update scripts
+                  :
+               fi
             fi
-         fi
-        
-      } # end if-not-input-zone
+
+            ;; # case type=destination
+      esac
    done
-#} | tee -a $logfile
+#} | tee -a ${logfile}
 
 # EMAIL LOGFILE
-#$sendsh $sendopts "$server $scriptfile out" $logfile $interestedparties
+#${sendsh} ${sendopts} "${server} ${scriptfile} out" ${logfile} ${interestedparties}
+
+trap '' 0 # 
+clean_deploy
+
+# STOP THE READ CONFIG FILE
+exit 0
+fi; done; }
