@@ -59,6 +59,7 @@ rm -rf ${buildroot}
 /usr/share/mirror/build/pack
 /usr/share/mirror/inc/rsync
 /usr/share/mirror/mirror-master.sh
+/usr/share/mirror/deploy1.sh
 /usr/share/mirror/doc
 /usr/share/mirror/examples/FOOTER.html
 /usr/share/mirror/examples/HEADER.html

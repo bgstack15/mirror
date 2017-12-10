@@ -140,4 +140,7 @@ Changed deploy.conf to use package directories for deployment
 - Fixed deploy.sh: allow packages to be saved to a symlinked directory.
 
 * Sat Dec  9 2017 B Stack <bgstack15@gmail.com> 1.1-6
-- Work in progress
+- Rewrote deploy.sh to work with multiple input files for a target web directory.
+- Added deploy.conf option for freebsd
+- Changed mirror.cron run times
+- Fixed inc/rsync MIRRORDIR variable
